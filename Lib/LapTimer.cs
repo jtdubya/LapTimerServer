@@ -1,5 +1,4 @@
-﻿using Lib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,34 +8,63 @@ namespace WebAppPrototype.Lib
     public class LapTimer
     {
         private readonly int m_id;
-        private int m_lapCount;
         private List<Lap> m_laps;
 
         public LapTimer(int id)
         {
             m_id = id;
-            m_lapCount = 0;
             m_laps = new List<Lap>();
         }
 
-        public void AddLap(TimeSpan time)
+        public int GetId()
         {
-            throw new NotImplementedException();
+            return m_id;
+        }
+
+        public void AddLap(TimeSpan timeSpan)
+        {
+            int nextLapNumber = m_laps.Count() + 1;
+            m_laps.Add(new Lap(nextLapNumber, timeSpan));
         }
 
         public int GetLapCount()
         {
-            throw new NotImplementedException();
+            return m_laps.Count();
         }
 
         public TimeSpan GetTotalTime()
         {
-            throw new NotImplementedException();
+            TimeSpan totalTime = new TimeSpan(0);
+
+            if (m_laps.Count() > 0)
+            {
+                for (int i = 0; i < m_laps.Count(); i++)
+                {
+                    totalTime += m_laps[i].GetLapTime();
+                }
+            }
+
+            return totalTime;
         }
 
         public Lap GetFastestLap()
         {
-            throw new NotImplementedException();
+            Lap fastestLap = new Lap(0, new TimeSpan(0));
+
+            if (m_laps.Count() > 0)
+            {
+                fastestLap = m_laps[0];
+
+                for (int i = 1; i < m_laps.Count(); i++)
+                {
+                    if (m_laps[i].GetLapTime() < fastestLap.GetLapTime())
+                    {
+                        fastestLap = m_laps[i];
+                    }
+                }
+            }
+
+            return fastestLap;
         }
     }
 }

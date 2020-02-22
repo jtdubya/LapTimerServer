@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lib
+namespace WebAppPrototype.Lib
 {
     public class Lap
     {
@@ -18,7 +18,7 @@ namespace Lib
             return m_lapNumber;
         }
 
-        public TimeSpan GetLatTime()
+        public TimeSpan GetLapTime()
         {
             return m_lapTime;
         }
