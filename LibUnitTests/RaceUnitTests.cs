@@ -5,7 +5,7 @@ using Xunit;
 
 namespace WebAppPrototype.LibUnitTests
 {
-    public class RaceTests
+    public class RaceUnitTests
     {
         private Race m_race = new Race(10);
 
