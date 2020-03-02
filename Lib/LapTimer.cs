@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebAppPrototype.Lib
 {
@@ -40,7 +39,7 @@ namespace WebAppPrototype.Lib
             {
                 for (int i = 0; i < m_laps.Count(); i++)
                 {
-                    totalTime += m_laps[i].GetLapTime();
+                    totalTime += m_laps[i].Time;
                 }
             }
 
@@ -57,7 +56,7 @@ namespace WebAppPrototype.Lib
 
                 for (int i = 1; i < m_laps.Count(); i++)
                 {
-                    if (m_laps[i].GetLapTime() < fastestLap.GetLapTime())
+                    if (m_laps[i].Time < fastestLap.Time)
                     {
                         fastestLap = m_laps[i];
                     }
