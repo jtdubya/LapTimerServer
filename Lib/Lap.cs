@@ -2,25 +2,18 @@
 
 namespace WebAppPrototype.Lib
 {
-    public class Lap
+    public struct Lap
     {
-        private readonly int m_lapNumber;
-        private readonly TimeSpan m_lapTime;
-
         public Lap(int lapNumber, TimeSpan lapTime)
         {
-            m_lapNumber = lapNumber;
-            m_lapTime = lapTime;
+            Number = lapNumber;
+            Time = lapTime;
         }
 
-        public int GetLapNumber()
-        {
-            return m_lapNumber;
-        }
+        public int Number { get; }
 
-        public TimeSpan GetLapTime()
-        {
-            return m_lapTime;
-        }
+        public TimeSpan Time { get; }
+
+        public override string ToString() => $"{Number}: {Time}";
     }
 }
