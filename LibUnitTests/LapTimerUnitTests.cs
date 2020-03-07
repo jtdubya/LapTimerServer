@@ -1,6 +1,6 @@
 using System;
-using Xunit;
 using WebAppPrototype.Lib;
+using Xunit;
 
 namespace WebAppPrototype.LibUnitTests
 {
@@ -95,8 +95,8 @@ namespace WebAppPrototype.LibUnitTests
             Lap fastestLap = m_lapTimer.GetFastestLap();
             TimeSpan zeroTime = new TimeSpan(0);
 
-            Assert.Equal(0, fastestLap.GetLapNumber());
-            Assert.Equal(zeroTime, fastestLap.GetLapTime());
+            Assert.Equal(0, fastestLap.Number);
+            Assert.Equal(zeroTime, fastestLap.Time);
         }
 
         [Fact]
@@ -107,12 +107,12 @@ namespace WebAppPrototype.LibUnitTests
 
             Lap fastestlap = m_lapTimer.GetFastestLap();
 
-            Assert.Equal(1, fastestlap.GetLapNumber());
-            Assert.Equal(days, fastestlap.GetLapTime().Days);
-            Assert.Equal(hours, fastestlap.GetLapTime().Hours);
-            Assert.Equal(minutes, fastestlap.GetLapTime().Minutes);
-            Assert.Equal(seconds, fastestlap.GetLapTime().Seconds);
-            Assert.Equal(millis, fastestlap.GetLapTime().Milliseconds);
+            Assert.Equal(1, fastestlap.Number);
+            Assert.Equal(days, fastestlap.Time.Days);
+            Assert.Equal(hours, fastestlap.Time.Hours);
+            Assert.Equal(minutes, fastestlap.Time.Minutes);
+            Assert.Equal(seconds, fastestlap.Time.Seconds);
+            Assert.Equal(millis, fastestlap.Time.Milliseconds);
         }
 
         [Fact]
@@ -130,12 +130,12 @@ namespace WebAppPrototype.LibUnitTests
 
             Lap fastestlap = m_lapTimer.GetFastestLap();
 
-            Assert.Equal(1, fastestlap.GetLapNumber());
-            Assert.Equal(days, fastestlap.GetLapTime().Days);
-            Assert.Equal(hours, fastestlap.GetLapTime().Hours);
-            Assert.Equal(minutes, fastestlap.GetLapTime().Minutes);
-            Assert.Equal(seconds, fastestlap.GetLapTime().Seconds);
-            Assert.Equal(millis, fastestlap.GetLapTime().Milliseconds);
+            Assert.Equal(1, fastestlap.Number);
+            Assert.Equal(days, fastestlap.Time.Days);
+            Assert.Equal(hours, fastestlap.Time.Hours);
+            Assert.Equal(minutes, fastestlap.Time.Minutes);
+            Assert.Equal(seconds, fastestlap.Time.Seconds);
+            Assert.Equal(millis, fastestlap.Time.Milliseconds);
         }
 
         [Fact]
@@ -153,12 +153,12 @@ namespace WebAppPrototype.LibUnitTests
 
             Lap fastestlap = m_lapTimer.GetFastestLap();
 
-            Assert.Equal(5, fastestlap.GetLapNumber());
-            Assert.Equal(days, fastestlap.GetLapTime().Days);
-            Assert.Equal(hours, fastestlap.GetLapTime().Hours);
-            Assert.Equal(minutes, fastestlap.GetLapTime().Minutes);
-            Assert.Equal(seconds, fastestlap.GetLapTime().Seconds);
-            Assert.Equal(millis, fastestlap.GetLapTime().Milliseconds);
+            Assert.Equal(5, fastestlap.Number);
+            Assert.Equal(days, fastestlap.Time.Days);
+            Assert.Equal(hours, fastestlap.Time.Hours);
+            Assert.Equal(minutes, fastestlap.Time.Minutes);
+            Assert.Equal(seconds, fastestlap.Time.Seconds);
+            Assert.Equal(millis, fastestlap.Time.Milliseconds);
         }
 
         [Fact]
@@ -176,12 +176,12 @@ namespace WebAppPrototype.LibUnitTests
 
             Lap fastestlap = m_lapTimer.GetFastestLap();
 
-            Assert.Equal(8, fastestlap.GetLapNumber());
-            Assert.Equal(days, fastestlap.GetLapTime().Days);
-            Assert.Equal(hours, fastestlap.GetLapTime().Hours);
-            Assert.Equal(minutes, fastestlap.GetLapTime().Minutes);
-            Assert.Equal(seconds, fastestlap.GetLapTime().Seconds);
-            Assert.Equal(millis, fastestlap.GetLapTime().Milliseconds);
+            Assert.Equal(8, fastestlap.Number);
+            Assert.Equal(days, fastestlap.Time.Days);
+            Assert.Equal(hours, fastestlap.Time.Hours);
+            Assert.Equal(minutes, fastestlap.Time.Minutes);
+            Assert.Equal(seconds, fastestlap.Time.Seconds);
+            Assert.Equal(millis, fastestlap.Time.Milliseconds);
         }
     }
 }
