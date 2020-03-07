@@ -7,6 +7,7 @@ namespace WebAppPrototype.Lib
     {
         private int m_nextId;
         private Dictionary<IPAddress, LapTimer> m_lapTimers;
+        private LapTimer existingtimer;
 
         public LapTimerManager()
         {
@@ -21,18 +22,26 @@ namespace WebAppPrototype.Lib
         /// <returns>ID of lap timer or -1 if a timer with the provided IP address alread exists</returns>
         public int RegisterLapTimer(IPAddress lapTimerIpAddress)
         {
-            int currentId = m_nextId;
-            m_nextId++;
+            int returnId = -1;
+            bool alreadyRegistered = m_lapTimers.TryGetValue(lapTimerIpAddress, out LapTimer existingtimer);
 
-            LapTimer lapTimer = new LapTimer(currentId);
-            bool added = m_lapTimers.TryAdd(lapTimerIpAddress, lapTimer);
-
-            if (!added)
+            if (alreadyRegistered)
             {
-                currentId = -1;
+                returnId = existingtimer.GetId();
+            }
+            else
+            {
+                LapTimer lapTimer = new LapTimer(m_nextId);
+                bool added = m_lapTimers.TryAdd(lapTimerIpAddress, lapTimer);
+
+                if (added)
+                {
+                    returnId = m_nextId;
+                    m_nextId++;
+                }
             }
 
-            return currentId;
+            return returnId;
         }
 
         public Dictionary<IPAddress, LapTimer> GetAllLapTimers()
