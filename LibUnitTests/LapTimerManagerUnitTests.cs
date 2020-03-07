@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Net;
 using System.Collections.Generic;
-using Xunit;
+using System.Net;
 using WebAppPrototype.Lib;
+using Xunit;
 
 namespace WebAppPrototype.LibUnitTests
 {
@@ -30,14 +30,14 @@ namespace WebAppPrototype.LibUnitTests
         }
 
         [Fact]
-        public void RegisterLapTimer_TimersWithDuplicateIP_ReturnsNegativeOne()
+        public void RegisterLapTimer_TimersWithDuplicateIP_ReturnsId()
         {
             IPAddress lapTimerIpAddress = IPAddress.Parse("10.0.1.1");
             int idOne = m_lapTimerManager.RegisterLapTimer(lapTimerIpAddress);
             int idTwo = m_lapTimerManager.RegisterLapTimer(lapTimerIpAddress);
 
             Assert.Equal(1, idOne);
-            Assert.Equal(-1, idTwo);
+            Assert.Equal(1, idTwo);
         }
 
         [Fact]
