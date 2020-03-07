@@ -16,20 +16,13 @@ namespace WebAppPrototype.Lib
         }
 
         /// <summary>
-        /// Registers a lap timer by IP address
+        /// Registers a lap timer by IP address or returns id of timer if it is already registered
         /// </summary>
-        /// <param name="lapTimerIpAddress">The IP address of the lap timer</param>
-        /// <returns>ID of lap timer or -1 if a timer with the provided IP address alread exists</returns>
         public int RegisterLapTimer(IPAddress lapTimerIpAddress)
         {
-            int returnId = -1;
-            bool alreadyRegistered = m_lapTimers.TryGetValue(lapTimerIpAddress, out LapTimer existingtimer);
+            int returnId = GetLapTimerByIPAddress(lapTimerIpAddress);
 
-            if (alreadyRegistered)
-            {
-                returnId = existingtimer.GetId();
-            }
-            else
+            if (returnId == -1)
             {
                 LapTimer lapTimer = new LapTimer(m_nextId);
                 bool added = m_lapTimers.TryAdd(lapTimerIpAddress, lapTimer);
@@ -42,6 +35,22 @@ namespace WebAppPrototype.Lib
             }
 
             return returnId;
+        }
+
+        /// <summary>
+        /// Gets Lap Timer by IP Address if it is registered of -1 if not registered
+        /// </summary>
+        public int GetLapTimerByIPAddress(IPAddress lapTimerIpAddress)
+        {
+            int idToReturn = -1;
+            bool alreadyRegistered = m_lapTimers.TryGetValue(lapTimerIpAddress, out LapTimer existingtimer);
+
+            if (alreadyRegistered)
+            {
+                idToReturn = existingtimer.GetId();
+            }
+
+            return idToReturn;
         }
 
         public Dictionary<IPAddress, LapTimer> GetAllLapTimers()
