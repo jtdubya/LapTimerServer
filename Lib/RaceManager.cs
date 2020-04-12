@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace WebAppPrototype.Lib
 {
@@ -13,19 +15,29 @@ namespace WebAppPrototype.Lib
         Finished
     }
 
+    /// <summary>
+    /// Manages execution state for lap timers and races
+    /// Has a 1:1 relationship to a race track
+    /// </summary>
     public class RaceManager
     {
         private int m_maxParticipants;
         private RaceState m_raceState;
+        private CancellationTokenSource m_cancellationTokenSource;
+        private long m_milliSecondsUntilRaceStart;
         private readonly LapTimerManager m_lapTimerManager;
         private readonly LapTimerMessageHandler m_lapTimerMessageHandler;
+
+        public long RaceStartCountDownDuration { get; set; }
 
         public RaceManager()
         {
             m_maxParticipants = 2;
             m_raceState = RaceState.Idle;
+            m_milliSecondsUntilRaceStart = -1;
             m_lapTimerManager = new LapTimerManager();
             m_lapTimerMessageHandler = new LapTimerMessageHandler();
+            RaceStartCountDownDuration = 20000;
         }
 
         public RaceState GetRaceState()
@@ -98,11 +110,46 @@ namespace WebAppPrototype.Lib
         public void StartRace()
         {
             m_raceState = RaceState.Start;
+            m_cancellationTokenSource = new CancellationTokenSource();
+            CountDownToRaceStart();
+        }
+
+        public void CancelRaceStart()
+        {
+            m_cancellationTokenSource.Cancel();
+        }
+
+        public long GetMillisSecondsUntilRaceStart()
+        {
+            return m_milliSecondsUntilRaceStart;
         }
 
         public void FinishRace()
         {
             m_raceState = RaceState.Finished;
+        }
+
+        public Task CountDownToRaceStart()
+        {
+            return Task.Run(() =>
+            {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+
+                while (stopwatch.ElapsedMilliseconds < RaceStartCountDownDuration)
+                {
+                    if (m_cancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        m_raceState = RaceState.Idle;
+                        m_cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                    }
+                    m_milliSecondsUntilRaceStart = RaceStartCountDownDuration - stopwatch.ElapsedMilliseconds;
+                }
+
+                stopwatch.Stop();
+                m_raceState = RaceState.InProgress;
+                m_milliSecondsUntilRaceStart = -1;
+            }, m_cancellationTokenSource.Token);
         }
     }
 }
