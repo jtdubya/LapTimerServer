@@ -88,5 +88,58 @@ namespace WebAppPrototype.LibUnitTests
             Exception exception = Assert.Throws<InvalidOperationException>(() => m_raceManager.Register("1.1.1.1"));
             Assert.Contains("Registration closed. Wait until next registration period.", exception.Message);
         }
+
+        [Fact]
+        public void GetRaceState_InitialState_StateIsIdle()
+        {
+            Assert.Equal(RaceState.Idle, m_raceManager.GetRaceState());
+        }
+
+        [Fact]
+        public void StartRaceAndGetRaceState_StateIsStart()
+        {
+            m_raceManager.StartRace();
+            Assert.Equal(RaceState.Start, m_raceManager.GetRaceState());
+        }
+
+        [Fact]
+        public void StartRaceAndGetRaceState_ZeroCountDown_StateIsInProgress()
+        {
+            m_raceManager.RaceStartCountDownDuration = 0;
+            m_raceManager.StartRace();
+            Thread.Sleep(5); // Countdown must go through one loop
+            Assert.Equal(RaceState.InProgress, m_raceManager.GetRaceState());
+        }
+
+        [Fact]
+        public void StartRaceAndGetTimeUntilRaceStart_TimerCountsDownUntilRaceStarts()
+        {
+            m_raceManager.RaceStartCountDownDuration = 15;
+            m_raceManager.StartRace();
+            Thread.Sleep(5);
+            long beforeMs = m_raceManager.GetMillisSecondsUntilRaceStart();
+            Thread.Sleep(1);
+            long afterMs = m_raceManager.GetMillisSecondsUntilRaceStart();
+
+            while (beforeMs > 0)
+            {
+                Assert.True(beforeMs > afterMs, "Before: " + beforeMs + ". After: " + afterMs);
+                beforeMs = m_raceManager.GetMillisSecondsUntilRaceStart();
+                Thread.Sleep(1);
+                afterMs = m_raceManager.GetMillisSecondsUntilRaceStart();
+            }
+        }
+
+        [Fact]
+        public void CancelRaceStartCountdown()
+        {
+            m_raceManager.RaceStartCountDownDuration = 1000;
+            m_raceManager.StartRace();
+            Thread.Sleep(5);
+            m_raceManager.CancelRaceStartCountdown();
+            Thread.Sleep(5);
+            Assert.Equal(-1, m_raceManager.GetMillisSecondsUntilRaceStart());
+            Assert.Equal(RaceState.Idle, m_raceManager.GetRaceState());
+        }
     }
 }
