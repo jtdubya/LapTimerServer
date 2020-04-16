@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -96,16 +97,16 @@ namespace WebAppPrototype.LibUnitTests
         }
 
         [Fact]
-        public void StartRaceAndGetRaceState_StateIsStart()
+        public void StartRaceAndGetRaceState_StateIsWaitingToStart()
         {
             m_raceManager.StartRace();
-            Assert.Equal(RaceState.Start, m_raceManager.GetRaceState());
+            Assert.Equal(RaceState.StartCountdown, m_raceManager.GetRaceState());
         }
 
         [Fact]
         public void StartRaceAndGetRaceState_ZeroCountDown_StateIsInProgress()
         {
-            m_raceManager.RaceStartCountDownDuration = 0;
+            m_raceManager.RaceStartCountdownDuration = 0;
             m_raceManager.StartRace();
             Thread.Sleep(5); // Countdown must go through one loop
             Assert.Equal(RaceState.InProgress, m_raceManager.GetRaceState());
@@ -114,32 +115,93 @@ namespace WebAppPrototype.LibUnitTests
         [Fact]
         public void StartRaceAndGetTimeUntilRaceStart_TimerCountsDownUntilRaceStarts()
         {
-            m_raceManager.RaceStartCountDownDuration = 15;
+            m_raceManager.RaceStartCountdownDuration = 15;
             m_raceManager.StartRace();
             Thread.Sleep(5);
-            long beforeMs = m_raceManager.GetMillisSecondsUntilRaceStart();
+            long beforeMs = m_raceManager.GetMillisecondsUntilRaceStart();
             Thread.Sleep(1);
-            long afterMs = m_raceManager.GetMillisSecondsUntilRaceStart();
+            long afterMs = m_raceManager.GetMillisecondsUntilRaceStart();
+
+            Assert.Equal(RaceState.StartCountdown, m_raceManager.GetRaceState());
 
             while (beforeMs > 0)
             {
                 Assert.True(beforeMs > afterMs, "Before: " + beforeMs + ". After: " + afterMs);
-                beforeMs = m_raceManager.GetMillisSecondsUntilRaceStart();
+                beforeMs = m_raceManager.GetMillisecondsUntilRaceStart();
                 Thread.Sleep(1);
-                afterMs = m_raceManager.GetMillisSecondsUntilRaceStart();
+                afterMs = m_raceManager.GetMillisecondsUntilRaceStart();
             }
+
+            Assert.Equal(RaceState.InProgress, m_raceManager.GetRaceState());
         }
 
         [Fact]
         public void CancelRaceStartCountdown()
         {
-            m_raceManager.RaceStartCountDownDuration = 1000;
+            m_raceManager.RaceStartCountdownDuration = 1000;
             m_raceManager.StartRace();
             Thread.Sleep(5);
-            m_raceManager.CancelRaceStartCountdown();
+            m_raceManager.CancelCountdown();
             Thread.Sleep(5);
-            Assert.Equal(-1, m_raceManager.GetMillisSecondsUntilRaceStart());
+            Assert.Equal(-1, m_raceManager.GetMillisecondsUntilRaceStart());
             Assert.Equal(RaceState.Idle, m_raceManager.GetRaceState());
+        }
+
+        [Fact]
+        public void FinishRace_NoCountdown()
+        {
+            m_raceManager.StartRace(0);
+            m_raceManager.FinishRace(0);
+            Assert.Equal(RaceState.Finished, m_raceManager.GetRaceState());
+        }
+
+        [Fact]
+        public void FinishRaceAndGetTimeUntilFinish_UseCountdown()
+        {
+            m_raceManager.StartRace(0);
+            m_raceManager.FinishRace(15);
+            Thread.Sleep(5);
+            long beforeMs = m_raceManager.GetMillisecondsUntilRaceFinish();
+            Thread.Sleep(1);
+            long afterMs = m_raceManager.GetMillisecondsUntilRaceFinish();
+            Assert.Equal(RaceState.FinishCountdown, m_raceManager.GetRaceState());
+
+            while (beforeMs > 0)
+            {
+                Assert.True(beforeMs > afterMs, "Before: " + beforeMs + ". After: " + afterMs);
+                beforeMs = m_raceManager.GetMillisecondsUntilRaceFinish();
+                Thread.Sleep(1);
+                afterMs = m_raceManager.GetMillisecondsUntilRaceFinish();
+            }
+
+            Assert.Equal(RaceState.Finished, m_raceManager.GetRaceState());
+        }
+
+        [Fact]
+        public void GetAllRaces_NoRaces_ReturnsZero()
+        {
+            Assert.Empty(m_raceManager.GetAllRaces());
+        }
+
+        [Fact]
+        public void GetAllRaces_OneRace()
+        {
+            m_raceManager.RaceStartCountdownDuration = 0;
+            m_raceManager.StartRace();
+            Thread.Sleep(5);
+            Assert.Single(m_raceManager.GetAllRaces());
+        }
+
+        [Fact]
+        public void GetAllRaces_ManyRaces()
+        {
+            int raceCount = 1000;
+            for (int i = 0; i < raceCount; i++)
+            {
+                m_raceManager.StartRace(0);
+                m_raceManager.FinishRace(0);
+            }
+            Assert.Equal(raceCount, m_raceManager.GetAllRaces().Count);
         }
     }
 }
