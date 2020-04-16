@@ -7,7 +7,6 @@ namespace WebAppPrototype.Lib
     {
         private int m_nextId;
         private Dictionary<IPAddress, LapTimer> m_lapTimers;
-        private LapTimer existingtimer;
 
         public LapTimerManager()
         {
