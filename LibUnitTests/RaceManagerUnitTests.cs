@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -175,6 +176,68 @@ namespace WebAppPrototype.LibUnitTests
             }
 
             Assert.Equal(RaceState.Finished, m_raceManager.GetRaceState());
+        }
+
+        [Fact]
+        public void AddLapResult_NotRegistered_ThrowsException()
+        {
+            Assert.Throws<KeyNotFoundException>(() => m_raceManager.AddLapResult(IPAddress.Parse("1.1.1.1"), new TimeSpan()));
+        }
+
+        [Fact]
+        public void AddLapResult_RaceFinishesAfterMaxLapsWithOneTimer()
+        {
+            int numberOflaps = 5;
+            m_raceManager.Register("1.1.1.1");
+            m_raceManager.StartRace(0, numberOflaps);
+
+            for (int i = 0; i < numberOflaps; i++)
+            {
+                m_raceManager.AddLapResult(IPAddress.Parse("1.1.1.1"), new TimeSpan(0, 1, i));
+                if (i < numberOflaps - 1)
+                {
+                    Assert.Equal(RaceState.InProgress, m_raceManager.GetRaceState());
+                }
+            }
+
+            Assert.Equal(RaceState.Finished, m_raceManager.GetRaceState());
+        }
+
+        [Fact]
+        public void AddLapResult_RaceFinishesAfterMaxLapsWithMultipleTimers()
+        {
+            int numberOflaps = 5;
+            m_raceManager.WaitForAllCarsToFinishDuration = 10000;
+            m_raceManager.SetMaxParticipants(3);
+            var ip1 = IPAddress.Parse("1.1.1.1");
+            var ip2 = IPAddress.Parse("2.2.2.2");
+            var ip3 = IPAddress.Parse("3.3.3.3");
+            m_raceManager.Register(ip1.ToString());
+            m_raceManager.Register(ip2.ToString());
+            m_raceManager.Register(ip3.ToString());
+
+            m_raceManager.StartRace(0, numberOflaps);
+
+            for (int i = 0; i < numberOflaps - 1; i++)
+            {
+                m_raceManager.AddLapResult(ip3, new TimeSpan(0, 1, i - 1));
+                m_raceManager.AddLapResult(ip2, new TimeSpan(0, 1, i));
+                m_raceManager.AddLapResult(ip1, new TimeSpan(0, 1, i + 1));
+                Assert.Equal(RaceState.InProgress, m_raceManager.GetRaceState());
+            }
+
+            m_raceManager.AddLapResult(ip3, new TimeSpan(0, 1, 1)); // first car finishes
+            Assert.Equal(RaceState.FinishCountdown, m_raceManager.GetRaceState());
+            m_raceManager.AddLapResult(ip1, new TimeSpan(0, 1, 2));
+            Assert.Equal(RaceState.FinishCountdown, m_raceManager.GetRaceState());
+            m_raceManager.AddLapResult(ip2, new TimeSpan(0, 1, 3)); // last car finishes
+            Assert.Equal(RaceState.Finished, m_raceManager.GetRaceState());
+            var finishedIds = m_raceManager.GetFinishedParticipantsForLastRace();
+
+            // assert finished order
+            Assert.Equal(3, finishedIds[0]);
+            Assert.Equal(1, finishedIds[1]);
+            Assert.Equal(2, finishedIds[2]);
         }
 
         [Fact]
