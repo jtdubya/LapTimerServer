@@ -78,9 +78,9 @@ namespace WebAppPrototype.Lib
                 {
                     IPAddress ipAddress;
                     ipAddress = IPAddress.Parse(ipAddressString);
-                    id = m_lapTimerManager.GetLapTimerByIPAddress(ipAddress);
+                    LapTimer lapTimer = m_lapTimerManager.GetLapTimerByIPAddress(ipAddress);
 
-                    if (id == -1) // not registered
+                    if (lapTimer == null) // not registered
                     {
                         if (m_lapTimerManager.GetAllLapTimers().Count >= m_maxParticipants)
                         {
@@ -90,6 +90,10 @@ namespace WebAppPrototype.Lib
                         {
                             id = m_lapTimerManager.RegisterLapTimer(ipAddress);
                         }
+                    }
+                    else
+                    {
+                        id = lapTimer.GetId();
                     }
                 }
                 catch (FormatException)
@@ -163,24 +167,25 @@ namespace WebAppPrototype.Lib
         // The race is finished after either
         //      1. All participants finish
         //      2. The finish count down expires
-        // In case 1, the race duration ends with the last participant adding thier result
+        // In case 1, the race duration ends with the last participant adding their result
         // In case 2, the race duration ends with the last car that added a result before the countdown expired
-        public void AddResult(int id, List<Lap> laps)
-        {
-            int finishedCount = m_races.Last().GetResults().Count;
-            if (finishedCount == 0) // first to finish, start countdown
-            {
-            }
-            else if (finishedCount == m_maxParticipants)
-            {
-                // cancel countdown
-            }
-            else
-            {
-                // need to prevent duplicates although we should allow for
-                // results to be added after the countdown expires
-            }
-        }
+        // TODO: rethink how to do this since we are added laps incrementally
+        // public void AddResult(int id, List<Lap> laps)
+        //{
+        //    int finishedCount = m_races.Last().GetResults().Count;
+        //    if (finishedCount == 0) // first to finish, start countdown
+        //    {
+        //    }
+        //    else if (finishedCount == m_maxParticipants)
+        //    {
+        //        // cancel countdown
+        //    }
+        //    else
+        //    {
+        //        // need to prevent duplicates although we should allow for
+        //        // results to be added after the countdown expires
+        //    }
+        //}
 
         /// <summary>
         /// Races can be finished in 3 ways:

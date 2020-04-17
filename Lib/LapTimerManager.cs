@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace WebAppPrototype.Lib
@@ -19,9 +20,10 @@ namespace WebAppPrototype.Lib
         /// </summary>
         public int RegisterLapTimer(IPAddress lapTimerIpAddress)
         {
-            int returnId = GetLapTimerByIPAddress(lapTimerIpAddress);
+            int returnId = -1;
+            LapTimer existingTimer = GetLapTimerByIPAddress(lapTimerIpAddress);
 
-            if (returnId == -1)
+            if (existingTimer == null)
             {
                 LapTimer lapTimer = new LapTimer(m_nextId);
                 bool added = m_lapTimers.TryAdd(lapTimerIpAddress, lapTimer);
@@ -32,29 +34,35 @@ namespace WebAppPrototype.Lib
                     m_nextId++;
                 }
             }
+            else
+            {
+                returnId = existingTimer.GetId();
+            }
 
             return returnId;
         }
 
-        /// <summary>
-        /// Gets Lap Timer by IP Address if it is registered of -1 if not registered
-        /// </summary>
-        public int GetLapTimerByIPAddress(IPAddress lapTimerIpAddress)
+        public LapTimer GetLapTimerByIPAddress(IPAddress lapTimerIpAddress)
         {
-            int idToReturn = -1;
-            bool alreadyRegistered = m_lapTimers.TryGetValue(lapTimerIpAddress, out LapTimer existingtimer);
-
-            if (alreadyRegistered)
-            {
-                idToReturn = existingtimer.GetId();
-            }
-
-            return idToReturn;
+            m_lapTimers.TryGetValue(lapTimerIpAddress, out LapTimer existingtimer);
+            return existingtimer;
         }
 
         public Dictionary<IPAddress, LapTimer> GetAllLapTimers()
         {
             return m_lapTimers;
+        }
+
+        public void AddLapResult(IPAddress iPAddress, TimeSpan lapTime)
+        {
+            if (m_lapTimers.ContainsKey(iPAddress))
+            {
+                m_lapTimers[iPAddress].AddLap(lapTime);
+            }
+            else
+            {
+                throw new KeyNotFoundException();
+            }
         }
     }
 }

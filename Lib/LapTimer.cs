@@ -20,6 +20,11 @@ namespace WebAppPrototype.Lib
             return m_id;
         }
 
+        public List<Lap> GetAllLaps()
+        {
+            return m_laps;
+        }
+
         public void AddLap(TimeSpan timeSpan)
         {
             int nextLapNumber = m_laps.Count() + 1;
