@@ -2,7 +2,7 @@
 
 namespace WebAppPrototype.Lib
 {
-    public struct Lap
+    public readonly struct Lap
     {
         public Lap(int lapNumber, TimeSpan lapTime)
         {
@@ -14,6 +14,6 @@ namespace WebAppPrototype.Lib
 
         public TimeSpan Time { get; }
 
-        public override string ToString() => $"{Number}: {Time}";
+        public readonly override string ToString() => $"{Number}: {Time}";
     }
 }
