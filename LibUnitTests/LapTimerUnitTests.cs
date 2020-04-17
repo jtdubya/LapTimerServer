@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using WebAppPrototype.Lib;
 using Xunit;
 
@@ -46,6 +47,40 @@ namespace WebAppPrototype.LibUnitTests
             }
 
             Assert.Equal(totalLaps, m_lapTimer.GetLapCount());
+        }
+
+        [Fact]
+        public void AddLapAndGetAllLaps_ManyLaps()
+        {
+            int days = 0, hours = 0, minutes = 3, seconds = 14, millis = 791;
+            TimeSpan lap1Time = new TimeSpan(days, hours, minutes, seconds, millis);
+            TimeSpan lap2Time = new TimeSpan(days, hours, minutes, seconds, millis + 10);
+            TimeSpan lap3Time = new TimeSpan(days, hours, minutes, seconds + 1, millis);
+            TimeSpan lap4Time = new TimeSpan(days, hours, minutes + 1, seconds, millis);
+            TimeSpan lap5Time = new TimeSpan(days, hours, minutes, seconds, millis + 250);
+
+            m_lapTimer.AddLap(lap1Time);
+            m_lapTimer.AddLap(lap2Time);
+            m_lapTimer.AddLap(lap3Time);
+            m_lapTimer.AddLap(lap4Time);
+            m_lapTimer.AddLap(lap5Time);
+
+            List<Lap> allLaps = m_lapTimer.GetAllLaps();
+
+            Assert.Equal(1, allLaps[0].Number);
+            Assert.Equal(lap1Time, allLaps[0].Time);
+
+            Assert.Equal(2, allLaps[1].Number);
+            Assert.Equal(lap2Time, allLaps[1].Time);
+
+            Assert.Equal(3, allLaps[2].Number);
+            Assert.Equal(lap3Time, allLaps[2].Time);
+
+            Assert.Equal(4, allLaps[3].Number);
+            Assert.Equal(lap4Time, allLaps[3].Time);
+
+            Assert.Equal(5, allLaps[4].Number);
+            Assert.Equal(lap5Time, allLaps[4].Time);
         }
 
         [Fact]
