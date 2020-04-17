@@ -23,6 +23,7 @@ namespace WebAppPrototype.Lib
     /// </summary>
     public class RaceManager
     {
+        private const int DefaultNumberOfLaps = 10;
         private int m_maxParticipants;
         private long m_milliSecondsUntilRaceStart;
         private long m_milliSecondsUntilRaceFinish;
@@ -128,7 +129,7 @@ namespace WebAppPrototype.Lib
             StartRace(RaceStartCountdownDuration);
         }
 
-        public void StartRace(long countDownDuration)
+        public void StartRace(long countDownDuration, int numberOfLaps = DefaultNumberOfLaps)
         {
             if (countDownDuration > 0)
             {
@@ -137,7 +138,12 @@ namespace WebAppPrototype.Lib
             }
             else
             {
-                Race race = new Race(10);
+                Race race = new Race(numberOfLaps);
+                var allTimers = m_lapTimerManager.GetAllLapTimers();
+                foreach (var timer in allTimers)
+                {
+                    race.AddParticipant(timer.Value.GetId());
+                }
                 race.Start();
                 m_races.Add(race);
                 m_raceState = RaceState.InProgress;
@@ -169,23 +175,28 @@ namespace WebAppPrototype.Lib
         //      2. The finish count down expires
         // In case 1, the race duration ends with the last participant adding their result
         // In case 2, the race duration ends with the last car that added a result before the countdown expired
-        // TODO: rethink how to do this since we are added laps incrementally
-        // public void AddResult(int id, List<Lap> laps)
-        //{
-        //    int finishedCount = m_races.Last().GetResults().Count;
-        //    if (finishedCount == 0) // first to finish, start countdown
-        //    {
-        //    }
-        //    else if (finishedCount == m_maxParticipants)
-        //    {
-        //        // cancel countdown
-        //    }
-        //    else
-        //    {
-        //        // need to prevent duplicates although we should allow for
-        //        // results to be added after the countdown expires
-        //    }
-        //}
+        public void AddLapResult(IPAddress ipAddress, TimeSpan lapTime)
+        {
+            Lap addedLap = m_lapTimerManager.AddLapResult(ipAddress, lapTime);
+            int id = m_lapTimerManager.GetLapTimerByIPAddress(ipAddress).GetId();
+            m_races.Last().AddLapResult(id, addedLap);
+
+            if (m_raceState == RaceState.InProgress)
+            {
+                if (m_races.Last().HasAnyParticipantFinished())
+                {
+                    FinishRace();
+                }
+            }
+            else if (m_raceState == RaceState.FinishCountdown)
+            {
+                if (m_races.Last().HaveAllParticipantsFinished())
+                {
+                    CancelCountdown();
+                    FinishRace(0);
+                }
+            }
+        }
 
         /// <summary>
         /// Races can be finished in 3 ways:
@@ -211,14 +222,19 @@ namespace WebAppPrototype.Lib
                 m_races.Last().Finish();
                 m_raceState = RaceState.Finished;
                 m_milliSecondsUntilRaceFinish = 0;
-                m_raceState = RaceState.Finished;
             }
+        }
+
+        public List<int> GetFinishedParticipantsForLastRace()
+        {
+            return m_races.Last().GetFinishedParticipants();
         }
 
         #endregion public methods
 
         #region private methods
 
+        // made this non-static to use member fields, but we also need to make sure there is only one...
         private Task CountdownToRaceStage(RaceState state, long countDownDuration)
         {
             m_cancellationTokenSource = new CancellationTokenSource();
@@ -239,7 +255,7 @@ namespace WebAppPrototype.Lib
                         }
                         else if (state == RaceState.FinishCountdown)
                         {
-                            m_raceState = RaceState.InProgress;
+                            m_raceState = RaceState.Finished;
                             m_milliSecondsUntilRaceFinish = -1;
                         }
 

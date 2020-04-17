@@ -25,10 +25,12 @@ namespace WebAppPrototype.Lib
             return m_laps;
         }
 
-        public void AddLap(TimeSpan timeSpan)
+        public Lap AddLap(TimeSpan timeSpan)
         {
             int nextLapNumber = m_laps.Count() + 1;
-            m_laps.Add(new Lap(nextLapNumber, timeSpan));
+            Lap newLap = new Lap(nextLapNumber, timeSpan);
+            m_laps.Add(newLap);
+            return newLap;
         }
 
         public int GetLapCount()

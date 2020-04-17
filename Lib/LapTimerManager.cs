@@ -53,16 +53,9 @@ namespace WebAppPrototype.Lib
             return m_lapTimers;
         }
 
-        public void AddLapResult(IPAddress iPAddress, TimeSpan lapTime)
+        public Lap AddLapResult(IPAddress iPAddress, TimeSpan lapTime)
         {
-            if (m_lapTimers.ContainsKey(iPAddress))
-            {
-                m_lapTimers[iPAddress].AddLap(lapTime);
-            }
-            else
-            {
-                throw new KeyNotFoundException();
-            }
+            return m_lapTimers[iPAddress].AddLap(lapTime);
         }
     }
 }
