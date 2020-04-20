@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using WebAppPrototype.Lib;
+using LapTimerServer.Lib;
 using Xunit;
 
-namespace WebAppPrototype.LibUnitTests
+namespace LapTimerServer.LibUnitTests
 {
     public class LapTimerUnitTests
 

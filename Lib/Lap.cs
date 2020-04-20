@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebAppPrototype.Lib
+namespace LapTimerServer.Lib
 {
     public readonly struct Lap
     {

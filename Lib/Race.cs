@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebAppPrototype.Lib
+namespace LapTimerServer.Lib
 {
     public class Race
     {

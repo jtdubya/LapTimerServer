@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace WebAppPrototype.Lib
+namespace LapTimerServer.Lib
 {
     public class LapTimerManager
     {

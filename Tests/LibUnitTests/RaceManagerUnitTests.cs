@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using WebAppPrototype.Lib;
+using LapTimerServer.Lib;
 using Xunit;
 
-namespace WebAppPrototype.LibUnitTests
+namespace LapTimerServer.LibUnitTests
 {
     public class RaceManagerUnitTests
     {

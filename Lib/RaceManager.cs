@@ -6,7 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WebAppPrototype.Lib
+namespace LapTimerServer.Lib
 {
     public enum RaceState
     {
