@@ -13,13 +13,13 @@ namespace LapTimerServer.Controllers
     [Route("api/v1/[controller]/[action]")]
     public class RaceTimer : Controller
     {
-        private readonly ILogger<RaceTimer> m_logger;
-        private readonly RaceManager m_raceManager;
+        private readonly ILogger<RaceTimer> _logger;
+        private readonly RaceManager _raceManager;
 
         public RaceTimer(ILogger<RaceTimer> logger, RaceManager raceManager)
         {
-            m_logger = logger;
-            m_raceManager = raceManager;
+            _logger = logger;
+            _raceManager = raceManager;
         }
 
         /// <summary>
@@ -33,12 +33,12 @@ namespace LapTimerServer.Controllers
         {
             try
             {
-                int id = m_raceManager.Register(iPAddress);
+                int id = _raceManager.Register(iPAddress);
                 return Ok(id);
             }
             catch (Exception error)
             {
-                m_logger.LogInformation("RaceTimer/Register Exception: " + error.Message);
+                _logger.LogInformation("RaceTimer/Register Exception: " + error.Message);
                 return BadRequest(error.Message);
             }
         }
@@ -48,12 +48,12 @@ namespace LapTimerServer.Controllers
         {
             try
             {
-                m_raceManager.StartRace();
-                return Ok(m_raceManager.RaceStartCountdownDuration);
+                _raceManager.StartRace();
+                return Ok(_raceManager.RaceStartCountdownDuration);
             }
             catch (Exception error)
             {
-                m_logger.LogInformation("RaceTimer/StartRace Exception: " + error.Message);
+                _logger.LogInformation("RaceTimer/StartRace Exception: " + error.Message);
                 return BadRequest(error.Message);
             }
         }
@@ -63,12 +63,12 @@ namespace LapTimerServer.Controllers
         {
             try
             {
-                long time = m_raceManager.GetMillisecondsUntilRaceStart();
+                long time = _raceManager.GetMillisecondsUntilRaceStart();
                 return Ok(time);
             }
             catch (Exception error)
             {
-                m_logger.LogInformation("RaceTimer/GetTimeUntilRaceStart Exception: " + error.Message);
+                _logger.LogInformation("RaceTimer/GetTimeUntilRaceStart Exception: " + error.Message);
                 return BadRequest(error.Message);
             }
         }
@@ -78,12 +78,12 @@ namespace LapTimerServer.Controllers
         {
             try
             {
-                RaceState state = m_raceManager.GetRaceState();
+                RaceState state = _raceManager.GetRaceState();
                 return Ok(state);
             }
             catch (Exception error)
             {
-                m_logger.LogInformation("RaceTimer/GetRaceState Exception: " + error.Message);
+                _logger.LogInformation("RaceTimer/GetRaceState Exception: " + error.Message);
                 return BadRequest(error.Message);
             }
         }
