@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Xunit;
+using LapTimerServer.Lib;
 
 namespace LapTimerServer.Tests.ControllerIntegrationTests
 {
@@ -34,7 +36,9 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var response = await _httpClient.GetAsync(prefix + "/Register/1.1.1.1");
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            Assert.Equal("1", responseString);
+            var registerResponse = JsonSerializer.Deserialize<ResponseObjects.Register>(responseString);
+            Assert.Equal(1, registerResponse.id);
+            Assert.Equal("success", registerResponse.message);
         }
     }
 }

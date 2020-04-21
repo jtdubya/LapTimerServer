@@ -68,10 +68,11 @@ namespace LapTimerServer.Lib
             return _races;
         }
 
-        public int Register(string ipAddressString)
+        public ResponseObjects.Register Register(string ipAddressString)
         {
             int id = -1; // only set to positive number if registration is successful
-            string errorMessage = "Registration closed. ";
+            string message = string.Empty;
+            string closedMessage = "Registration closed. ";
 
             if (_raceState == RaceState.Idle)
             {
@@ -85,11 +86,12 @@ namespace LapTimerServer.Lib
                     {
                         if (_lapTimerManager.GetAllLapTimers().Count >= _maxParticipants)
                         {
-                            errorMessage += "Max participants reached.";
+                            message = closedMessage + "Max participants reached.";
                         }
                         else
                         {
                             id = _lapTimerManager.RegisterLapTimer(ipAddress);
+                            message = "success";
                         }
                     }
                     else
@@ -99,24 +101,23 @@ namespace LapTimerServer.Lib
                 }
                 catch (FormatException)
                 {
-                    errorMessage = "Could not parse IP address";
+                    throw new FormatException("Could not parse IP address");
                 }
                 catch (ArgumentNullException)
                 {
-                    errorMessage = "Must provide device IP address to register";
+                    throw new ArgumentNullException("Must provide device IP address to register");
                 }
             }
             else
             {
-                errorMessage += "Wait until next registration period.";
+                message = closedMessage + "Wait until next registration period.";
             }
 
-            if (id == -1)
+            return new ResponseObjects.Register
             {
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            return id;
+                id = id,
+                message = message
+            };
         }
 
         public Dictionary<IPAddress, LapTimer> GetParticipants()

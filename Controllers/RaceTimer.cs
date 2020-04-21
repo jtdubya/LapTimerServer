@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LapTimerServer.Lib;
@@ -29,17 +31,27 @@ namespace LapTimerServer.Controllers
         /// <param name="iPAddress">the ipv4 address of the race timer</param>
         /// <returns>ID of new or existing race timer or an error message</returns>
         [HttpGet("{iPAddress}")]
-        public ActionResult Register(string iPAddress)
+        [Produces("application/json")]
+        public JsonResult Register(string iPAddress)
         {
             try
             {
-                int id = _raceManager.Register(iPAddress);
-                return Ok(id);
+                ResponseObjects.Register registerResponse = _raceManager.Register(iPAddress);
+                return Json(registerResponse);
             }
             catch (Exception error)
             {
                 _logger.LogInformation("RaceTimer/Register Exception: " + error.Message);
-                return BadRequest(error.Message);
+                ResponseObjects.Register registerResponse = new ResponseObjects.Register
+                {
+                    id = -1,
+                    message = error.Message
+                };
+
+                return new JsonResult(registerResponse)
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
             }
         }
 

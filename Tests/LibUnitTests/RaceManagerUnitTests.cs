@@ -30,11 +30,11 @@ namespace LapTimerServer.LibUnitTests
         [Fact]
         public void Register_IdleStateWithDuplicates_ReturnsRegisteredID()
         {
-            int first = _raceManager.Register("10.0.1.1");
-            int second = _raceManager.Register("10.0.1.2");
-            int secondDuplicate = _raceManager.Register("10.0.1.2");
-            int firstDuplicate = _raceManager.Register("10.0.1.1");
-            int firstTriplicate = _raceManager.Register("10.0.1.1");
+            int first = _raceManager.Register("10.0.1.1").id;
+            int second = _raceManager.Register("10.0.1.2").id;
+            int secondDuplicate = _raceManager.Register("10.0.1.2").id;
+            int firstDuplicate = _raceManager.Register("10.0.1.1").id;
+            int firstTriplicate = _raceManager.Register("10.0.1.1").id;
 
             Assert.Equal(1, first);
             Assert.Equal(1, firstDuplicate);
@@ -48,9 +48,9 @@ namespace LapTimerServer.LibUnitTests
         public void Register_IdleState()
         {
             _raceManager.SetMaxParticipants(3);
-            int first = _raceManager.Register("10.0.1.1");
-            int second = _raceManager.Register("10.0.1.2");
-            int third = _raceManager.Register("10.0.1.3");
+            int first = _raceManager.Register("10.0.1.1").id;
+            int second = _raceManager.Register("10.0.1.2").id;
+            int third = _raceManager.Register("10.0.1.3").id;
 
             Assert.Equal(1, first);
             Assert.Equal(2, second);
@@ -59,27 +59,27 @@ namespace LapTimerServer.LibUnitTests
         }
 
         [Fact]
-        public void Register_IdleStateWithMoreThanMax_ThrowsException()
+        public void Register_IdleStateWithMoreThanMax_ReturnsBadIdAndMessage()
         {
             _raceManager.SetMaxParticipants(1);
-            int first = _raceManager.Register("10.0.1.1");
+            _raceManager.Register("10.0.1.1");
+            var secondResponse = _raceManager.Register("10.0.1.2");
 
-            Exception exception = Assert.Throws<InvalidOperationException>(() => _raceManager.Register("10.0.1.2"));
-
-            Assert.Contains("Registration closed. Max participants reached.", exception.Message);
+            Assert.Equal(-1, secondResponse.id);
+            Assert.Contains("Registration closed. Max participants reached.", secondResponse.message);
         }
 
         [Fact]
         public void Register_IdleStateWithBadIPAddress_ThrowsException()
         {
-            Exception exception = Assert.Throws<InvalidOperationException>(() => _raceManager.Register("l;sakdjfflsakdjf"));
+            Exception exception = Assert.Throws<FormatException>(() => _raceManager.Register("l;sakdjfflsakdjf"));
             Assert.Contains("Could not parse IP address", exception.Message);
         }
 
         [Fact]
         public void Register_IdleStateWithNullIPAddress_ThrowsException()
         {
-            Exception exception = Assert.Throws<InvalidOperationException>(() => _raceManager.Register(null));
+            Exception exception = Assert.Throws<ArgumentNullException>(() => _raceManager.Register(null));
             Assert.Contains("Must provide device IP address to register", exception.Message);
         }
 
@@ -87,8 +87,9 @@ namespace LapTimerServer.LibUnitTests
         public void Register_NonIdleState_ThrowException()
         {
             _raceManager.StartRace();
-            Exception exception = Assert.Throws<InvalidOperationException>(() => _raceManager.Register("1.1.1.1"));
-            Assert.Contains("Registration closed. Wait until next registration period.", exception.Message);
+            var response = _raceManager.Register("1.1.1.1");
+            Assert.Equal(-1, response.id);
+            Assert.Contains("Registration closed. Wait until next registration period.", response.message);
         }
 
         [Fact]
