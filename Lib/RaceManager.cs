@@ -68,7 +68,7 @@ namespace LapTimerServer.Lib
             return _races;
         }
 
-        public ResponseObjects.Register Register(string ipAddressString)
+        public ResponseObject.Register Register(string ipAddressString)
         {
             int id = -1; // only set to positive number if registration is successful
             string message = string.Empty;
@@ -113,7 +113,7 @@ namespace LapTimerServer.Lib
                 message = closedMessage + "Wait until next registration period.";
             }
 
-            return new ResponseObjects.Register
+            return new ResponseObject.Register
             {
                 id = id,
                 message = message
@@ -130,25 +130,33 @@ namespace LapTimerServer.Lib
             StartRace(RaceStartCountdownDuration);
         }
 
+        /// <summary>
+        /// Can start race from any state except InProgress or FinishCountdown
+        /// </summary>
+        /// <param name="countDownDuration"></param>
+        /// <param name="numberOfLaps"></param>
         public void StartRace(long countDownDuration, int numberOfLaps = DefaultNumberOfLaps)
         {
-            if (countDownDuration > 0)
+            if (_raceState != RaceState.InProgress || _raceState != RaceState.FinishCountdown)
             {
-                _raceState = RaceState.StartCountdown;
-                CountdownToRaceStage(RaceState.StartCountdown, countDownDuration);
-            }
-            else
-            {
-                Race race = new Race(numberOfLaps);
-                var allTimers = _lapTimerManager.GetAllLapTimers();
-                foreach (var timer in allTimers)
+                if (countDownDuration > 0)
                 {
-                    race.AddParticipant(timer.Value.GetId());
+                    _raceState = RaceState.StartCountdown;
+                    CountdownToRaceStage(RaceState.StartCountdown, countDownDuration);
                 }
-                race.Start();
-                _races.Add(race);
-                _raceState = RaceState.InProgress;
-                _milliSecondsUntilRaceStart = 0;
+                else
+                {
+                    Race race = new Race(numberOfLaps);
+                    var allTimers = _lapTimerManager.GetAllLapTimers();
+                    foreach (var timer in allTimers)
+                    {
+                        race.AddParticipant(timer.Value.GetId());
+                    }
+                    race.Start();
+                    _races.Add(race);
+                    _raceState = RaceState.InProgress;
+                    _milliSecondsUntilRaceStart = 0;
+                }
             }
         }
 
