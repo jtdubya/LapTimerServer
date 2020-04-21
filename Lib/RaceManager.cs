@@ -24,25 +24,25 @@ namespace LapTimerServer.Lib
     public class RaceManager
     {
         private const int DefaultNumberOfLaps = 10;
-        private int m_maxParticipants;
-        private long m_milliSecondsUntilRaceStart;
-        private long m_milliSecondsUntilRaceFinish;
-        private List<Race> m_races;
-        private RaceState m_raceState;
-        private CancellationTokenSource m_cancellationTokenSource;
-        private readonly LapTimerManager m_lapTimerManager;
+        private int _maxParticipants;
+        private long _milliSecondsUntilRaceStart;
+        private long _milliSecondsUntilRaceFinish;
+        private readonly List<Race> _races;
+        private RaceState _raceState;
+        private CancellationTokenSource _cancellationTokenSource;
+        private readonly LapTimerManager _lapTimerManager;
 
         public long RaceStartCountdownDuration { get; set; }
         public long WaitForAllCarsToFinishDuration { get; set; }
 
         public RaceManager()
         {
-            m_maxParticipants = 2;
-            m_raceState = RaceState.Idle;
-            m_races = new List<Race>();
-            m_milliSecondsUntilRaceStart = -1;
-            m_milliSecondsUntilRaceFinish = -1;
-            m_lapTimerManager = new LapTimerManager(); // could change this to DI
+            _maxParticipants = 2;
+            _raceState = RaceState.Idle;
+            _races = new List<Race>();
+            _milliSecondsUntilRaceStart = -1;
+            _milliSecondsUntilRaceFinish = -1;
+            _lapTimerManager = new LapTimerManager(); // could change this to DI
             RaceStartCountdownDuration = 20000;
         }
 
@@ -50,22 +50,22 @@ namespace LapTimerServer.Lib
 
         public RaceState GetRaceState()
         {
-            return m_raceState;
+            return _raceState;
         }
 
         public int GetMaxParticipants()
         {
-            return m_maxParticipants;
+            return _maxParticipants;
         }
 
         public void SetMaxParticipants(int newMax)
         {
-            m_maxParticipants = newMax;
+            _maxParticipants = newMax;
         }
 
         public List<Race> GetAllRaces()
         {
-            return m_races;
+            return _races;
         }
 
         public int Register(string ipAddressString)
@@ -73,23 +73,23 @@ namespace LapTimerServer.Lib
             int id = -1; // only set to positive number if registration is successful
             string errorMessage = "Registration closed. ";
 
-            if (m_raceState == RaceState.Idle)
+            if (_raceState == RaceState.Idle)
             {
                 try
                 {
                     IPAddress ipAddress;
                     ipAddress = IPAddress.Parse(ipAddressString);
-                    LapTimer lapTimer = m_lapTimerManager.GetLapTimerByIPAddress(ipAddress);
+                    LapTimer lapTimer = _lapTimerManager.GetLapTimerByIPAddress(ipAddress);
 
                     if (lapTimer == null) // not registered
                     {
-                        if (m_lapTimerManager.GetAllLapTimers().Count >= m_maxParticipants)
+                        if (_lapTimerManager.GetAllLapTimers().Count >= _maxParticipants)
                         {
                             errorMessage += "Max participants reached.";
                         }
                         else
                         {
-                            id = m_lapTimerManager.RegisterLapTimer(ipAddress);
+                            id = _lapTimerManager.RegisterLapTimer(ipAddress);
                         }
                     }
                     else
@@ -121,7 +121,7 @@ namespace LapTimerServer.Lib
 
         public Dictionary<IPAddress, LapTimer> GetParticipants()
         {
-            return m_lapTimerManager.GetAllLapTimers();
+            return _lapTimerManager.GetAllLapTimers();
         }
 
         public void StartRace()
@@ -133,40 +133,40 @@ namespace LapTimerServer.Lib
         {
             if (countDownDuration > 0)
             {
-                m_raceState = RaceState.StartCountdown;
+                _raceState = RaceState.StartCountdown;
                 CountdownToRaceStage(RaceState.StartCountdown, countDownDuration);
             }
             else
             {
                 Race race = new Race(numberOfLaps);
-                var allTimers = m_lapTimerManager.GetAllLapTimers();
+                var allTimers = _lapTimerManager.GetAllLapTimers();
                 foreach (var timer in allTimers)
                 {
                     race.AddParticipant(timer.Value.GetId());
                 }
                 race.Start();
-                m_races.Add(race);
-                m_raceState = RaceState.InProgress;
-                m_milliSecondsUntilRaceStart = 0;
+                _races.Add(race);
+                _raceState = RaceState.InProgress;
+                _milliSecondsUntilRaceStart = 0;
             }
         }
 
         public long GetMillisecondsUntilRaceStart()
         {
-            return m_milliSecondsUntilRaceStart;
+            return _milliSecondsUntilRaceStart;
         }
 
         public long GetMillisecondsUntilRaceFinish()
         {
-            return m_milliSecondsUntilRaceFinish;
+            return _milliSecondsUntilRaceFinish;
         }
 
         // same cancellation token is shared between start and finishing since you can't do both at the same time
 
         public void CancelCountdown()
         {
-            m_cancellationTokenSource.Cancel();
-            m_cancellationTokenSource.Dispose();
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
 
         // Finish countdown is triggered by first result
@@ -177,20 +177,20 @@ namespace LapTimerServer.Lib
         // In case 2, the race duration ends with the last car that added a result before the countdown expired
         public void AddLapResult(IPAddress ipAddress, TimeSpan lapTime)
         {
-            Lap addedLap = m_lapTimerManager.AddLapResult(ipAddress, lapTime);
-            int id = m_lapTimerManager.GetLapTimerByIPAddress(ipAddress).GetId();
-            m_races.Last().AddLapResult(id, addedLap);
+            Lap addedLap = _lapTimerManager.AddLapResult(ipAddress, lapTime);
+            int id = _lapTimerManager.GetLapTimerByIPAddress(ipAddress).GetId();
+            _races.Last().AddLapResult(id, addedLap);
 
-            if (m_raceState == RaceState.InProgress)
+            if (_raceState == RaceState.InProgress)
             {
-                if (m_races.Last().HasAnyParticipantFinished())
+                if (_races.Last().HasAnyParticipantFinished())
                 {
                     FinishRace();
                 }
             }
-            else if (m_raceState == RaceState.FinishCountdown)
+            else if (_raceState == RaceState.FinishCountdown)
             {
-                if (m_races.Last().HaveAllParticipantsFinished())
+                if (_races.Last().HaveAllParticipantsFinished())
                 {
                     CancelCountdown();
                     FinishRace(0);
@@ -214,20 +214,20 @@ namespace LapTimerServer.Lib
         {
             if (countDownMilliseconds > 0)
             {
-                m_raceState = RaceState.FinishCountdown;
+                _raceState = RaceState.FinishCountdown;
                 CountdownToRaceStage(RaceState.FinishCountdown, countDownMilliseconds);
             }
             else
             {
-                m_races.Last().Finish();
-                m_raceState = RaceState.Finished;
-                m_milliSecondsUntilRaceFinish = 0;
+                _races.Last().Finish();
+                _raceState = RaceState.Finished;
+                _milliSecondsUntilRaceFinish = 0;
             }
         }
 
         public List<int> GetFinishedParticipantsForLastRace()
         {
-            return m_races.Last().GetFinishedParticipants();
+            return _races.Last().GetFinishedParticipants();
         }
 
         #endregion public methods
@@ -237,7 +237,7 @@ namespace LapTimerServer.Lib
         // made this non-static to use member fields, but we also need to make sure there is only one...
         private Task CountdownToRaceStage(RaceState state, long countDownDuration)
         {
-            m_cancellationTokenSource = new CancellationTokenSource();
+            _cancellationTokenSource = new CancellationTokenSource();
 
             return Task.Run(() =>
             {
@@ -246,30 +246,30 @@ namespace LapTimerServer.Lib
 
                 while (countDownStopwatch.ElapsedMilliseconds < countDownDuration)
                 {
-                    if (m_cancellationTokenSource.Token.IsCancellationRequested)
+                    if (_cancellationTokenSource.Token.IsCancellationRequested)
                     {
                         if (state == RaceState.StartCountdown)
                         {
-                            m_raceState = RaceState.Idle;
-                            m_milliSecondsUntilRaceStart = -1;
+                            _raceState = RaceState.Idle;
+                            _milliSecondsUntilRaceStart = -1;
                         }
                         else if (state == RaceState.FinishCountdown)
                         {
-                            m_raceState = RaceState.Finished;
-                            m_milliSecondsUntilRaceFinish = -1;
+                            _raceState = RaceState.Finished;
+                            _milliSecondsUntilRaceFinish = -1;
                         }
 
-                        m_cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                        _cancellationTokenSource.Token.ThrowIfCancellationRequested();
                     }
 
                     // update timers
                     if (state == RaceState.StartCountdown)
                     {
-                        m_milliSecondsUntilRaceStart = countDownDuration - countDownStopwatch.ElapsedMilliseconds;
+                        _milliSecondsUntilRaceStart = countDownDuration - countDownStopwatch.ElapsedMilliseconds;
                     }
                     else if (state == RaceState.FinishCountdown)
                     {
-                        m_milliSecondsUntilRaceFinish = countDownDuration - countDownStopwatch.ElapsedMilliseconds;
+                        _milliSecondsUntilRaceFinish = countDownDuration - countDownStopwatch.ElapsedMilliseconds;
                     }
                 }
 
@@ -283,7 +283,7 @@ namespace LapTimerServer.Lib
                     FinishRace(0);
                 }
                 countDownStopwatch.Stop();
-            }, m_cancellationTokenSource.Token);
+            }, _cancellationTokenSource.Token);
         }
 
         #endregion private methods

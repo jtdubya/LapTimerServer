@@ -7,13 +7,13 @@ namespace LapTimerServer.LibUnitTests
 {
     public class RaceUnitTests
     {
-        private Race m_race = new Race(10);
+        private readonly Race _race = new Race(10);
 
         [Fact]
         public void Start()
         {
             DateTime before = DateTime.Now;
-            DateTime start = m_race.Start();
+            DateTime start = _race.Start();
 
             Assert.True(before < start);
             Assert.True(start < DateTime.Now);
@@ -23,7 +23,7 @@ namespace LapTimerServer.LibUnitTests
         public void Finish()
         {
             DateTime before = DateTime.Now;
-            DateTime start = m_race.Finish();
+            DateTime start = _race.Finish();
 
             Assert.True(before < start);
             Assert.True(start < DateTime.Now);
@@ -32,17 +32,17 @@ namespace LapTimerServer.LibUnitTests
         [Fact]
         public void GetDuration()
         {
-            DateTime start = m_race.Start();
+            DateTime start = _race.Start();
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.175));
-            DateTime finish = m_race.Finish();
+            DateTime finish = _race.Finish();
 
-            Assert.Equal(finish - start, m_race.GetDuration());
+            Assert.Equal(finish - start, _race.GetDuration());
         }
 
         [Fact]
         public void GetNumberOfLaps()
         {
-            Assert.Equal(10, m_race.GetNumberOfLaps());
+            Assert.Equal(10, _race.GetNumberOfLaps());
         }
 
         [Fact]
@@ -57,10 +57,10 @@ namespace LapTimerServer.LibUnitTests
             List<Lap> car1Laps = new List<Lap> { new Lap(1, car1Lap1), new Lap(2, car1Lap2) };
             List<Lap> car2Laps = new List<Lap> { new Lap(1, car2Lap1), new Lap(2, car2Lap2) };
 
-            m_race.AddResult(1, car1Laps);
-            m_race.AddResult(2, car2Laps);
+            _race.AddResult(1, car1Laps);
+            _race.AddResult(2, car2Laps);
 
-            var results = m_race.GetResults();
+            var results = _race.GetResults();
 
             Assert.True(results.ContainsKey(1));
             Assert.True(results.ContainsKey(2));

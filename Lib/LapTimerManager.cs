@@ -6,13 +6,13 @@ namespace LapTimerServer.Lib
 {
     public class LapTimerManager
     {
-        private int m_nextId;
-        private Dictionary<IPAddress, LapTimer> m_lapTimers;
+        private int _nextId;
+        private readonly Dictionary<IPAddress, LapTimer> _lapTimers;
 
         public LapTimerManager()
         {
-            m_nextId = 1;
-            m_lapTimers = new Dictionary<IPAddress, LapTimer>();
+            _nextId = 1;
+            _lapTimers = new Dictionary<IPAddress, LapTimer>();
         }
 
         /// <summary>
@@ -25,13 +25,13 @@ namespace LapTimerServer.Lib
 
             if (existingTimer == null)
             {
-                LapTimer lapTimer = new LapTimer(m_nextId);
-                bool added = m_lapTimers.TryAdd(lapTimerIpAddress, lapTimer);
+                LapTimer lapTimer = new LapTimer(_nextId);
+                bool added = _lapTimers.TryAdd(lapTimerIpAddress, lapTimer);
 
                 if (added)
                 {
-                    returnId = m_nextId;
-                    m_nextId++;
+                    returnId = _nextId;
+                    _nextId++;
                 }
             }
             else
@@ -44,18 +44,18 @@ namespace LapTimerServer.Lib
 
         public LapTimer GetLapTimerByIPAddress(IPAddress lapTimerIpAddress)
         {
-            m_lapTimers.TryGetValue(lapTimerIpAddress, out LapTimer existingtimer);
+            _lapTimers.TryGetValue(lapTimerIpAddress, out LapTimer existingtimer);
             return existingtimer;
         }
 
         public Dictionary<IPAddress, LapTimer> GetAllLapTimers()
         {
-            return m_lapTimers;
+            return _lapTimers;
         }
 
         public Lap AddLapResult(IPAddress iPAddress, TimeSpan lapTime)
         {
-            return m_lapTimers[iPAddress].AddLap(lapTime);
+            return _lapTimers[iPAddress].AddLap(lapTime);
         }
     }
 }

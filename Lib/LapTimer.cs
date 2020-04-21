@@ -6,47 +6,47 @@ namespace LapTimerServer.Lib
 {
     public class LapTimer
     {
-        private readonly int m_id;
-        private List<Lap> m_laps;
+        private readonly int _id;
+        private readonly List<Lap> _laps;
 
         public LapTimer(int id)
         {
-            m_id = id;
-            m_laps = new List<Lap>();
+            _id = id;
+            _laps = new List<Lap>();
         }
 
         public int GetId()
         {
-            return m_id;
+            return _id;
         }
 
         public List<Lap> GetAllLaps()
         {
-            return m_laps;
+            return _laps;
         }
 
         public Lap AddLap(TimeSpan timeSpan)
         {
-            int nextLapNumber = m_laps.Count() + 1;
+            int nextLapNumber = _laps.Count() + 1;
             Lap newLap = new Lap(nextLapNumber, timeSpan);
-            m_laps.Add(newLap);
+            _laps.Add(newLap);
             return newLap;
         }
 
         public int GetLapCount()
         {
-            return m_laps.Count();
+            return _laps.Count();
         }
 
         public TimeSpan GetTotalTime()
         {
             TimeSpan totalTime = new TimeSpan(0);
 
-            if (m_laps.Count() > 0)
+            if (_laps.Count() > 0)
             {
-                for (int i = 0; i < m_laps.Count(); i++)
+                for (int i = 0; i < _laps.Count(); i++)
                 {
-                    totalTime += m_laps[i].Time;
+                    totalTime += _laps[i].Time;
                 }
             }
 
@@ -57,15 +57,15 @@ namespace LapTimerServer.Lib
         {
             Lap fastestLap = new Lap(0, new TimeSpan(0));
 
-            if (m_laps.Count() > 0)
+            if (_laps.Count() > 0)
             {
-                fastestLap = m_laps[0];
+                fastestLap = _laps[0];
 
-                for (int i = 1; i < m_laps.Count(); i++)
+                for (int i = 1; i < _laps.Count(); i++)
                 {
-                    if (m_laps[i].Time < fastestLap.Time)
+                    if (_laps[i].Time < fastestLap.Time)
                     {
-                        fastestLap = m_laps[i];
+                        fastestLap = _laps[i];
                     }
                 }
             }

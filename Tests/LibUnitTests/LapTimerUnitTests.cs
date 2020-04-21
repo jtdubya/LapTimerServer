@@ -8,7 +8,7 @@ namespace LapTimerServer.LibUnitTests
     public class LapTimerUnitTests
 
     {
-        private readonly LapTimer m_lapTimer = new LapTimer(1);
+        private readonly LapTimer _lapTimer = new LapTimer(1);
 
         [Fact]
         public void GetId()
@@ -25,15 +25,15 @@ namespace LapTimerServer.LibUnitTests
         [Fact]
         public void AddLapAndGetLapCount_ZeroLaps()
         {
-            Assert.Equal(0, m_lapTimer.GetLapCount());
+            Assert.Equal(0, _lapTimer.GetLapCount());
         }
 
         [Fact]
         public void AddLapAndGetLapCount_OneLap()
         {
-            m_lapTimer.AddLap(new TimeSpan());
+            _lapTimer.AddLap(new TimeSpan());
 
-            Assert.Equal(1, m_lapTimer.GetLapCount());
+            Assert.Equal(1, _lapTimer.GetLapCount());
         }
 
         [Fact]
@@ -43,10 +43,10 @@ namespace LapTimerServer.LibUnitTests
 
             for (int i = 0; i < totalLaps; i++)
             {
-                m_lapTimer.AddLap(new TimeSpan());
+                _lapTimer.AddLap(new TimeSpan());
             }
 
-            Assert.Equal(totalLaps, m_lapTimer.GetLapCount());
+            Assert.Equal(totalLaps, _lapTimer.GetLapCount());
         }
 
         [Fact]
@@ -59,13 +59,13 @@ namespace LapTimerServer.LibUnitTests
             TimeSpan lap4Time = new TimeSpan(days, hours, minutes + 1, seconds, millis);
             TimeSpan lap5Time = new TimeSpan(days, hours, minutes, seconds, millis + 250);
 
-            m_lapTimer.AddLap(lap1Time);
-            m_lapTimer.AddLap(lap2Time);
-            m_lapTimer.AddLap(lap3Time);
-            m_lapTimer.AddLap(lap4Time);
-            m_lapTimer.AddLap(lap5Time);
+            _lapTimer.AddLap(lap1Time);
+            _lapTimer.AddLap(lap2Time);
+            _lapTimer.AddLap(lap3Time);
+            _lapTimer.AddLap(lap4Time);
+            _lapTimer.AddLap(lap5Time);
 
-            List<Lap> allLaps = m_lapTimer.GetAllLaps();
+            List<Lap> allLaps = _lapTimer.GetAllLaps();
 
             Assert.Equal(1, allLaps[0].Number);
             Assert.Equal(lap1Time, allLaps[0].Time);
@@ -87,16 +87,16 @@ namespace LapTimerServer.LibUnitTests
         public void GetTotalTime_NoLaps_ReturnsZero()
         {
             TimeSpan zeroTime = new TimeSpan(0);
-            Assert.Equal(zeroTime, m_lapTimer.GetTotalTime());
+            Assert.Equal(zeroTime, _lapTimer.GetTotalTime());
         }
 
         [Fact]
         public void GetTotalTime_OneLap()
         {
             int days = 0, hours = 2, minutes = 48, seconds = 14, millis = 74;
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis));
 
-            TimeSpan totalTime = m_lapTimer.GetTotalTime();
+            TimeSpan totalTime = _lapTimer.GetTotalTime();
 
             Assert.Equal(days, totalTime.Days);
             Assert.Equal(hours, totalTime.Hours);
@@ -109,13 +109,13 @@ namespace LapTimerServer.LibUnitTests
         public void GetTotalTime_ManyLaps()
         {
             int days = 10, hours = 4, minutes = 31, seconds = 56, millis = 860;
-            m_lapTimer.AddLap(new TimeSpan(days, 0, 0, 0, 0));
-            m_lapTimer.AddLap(new TimeSpan(0, hours, 0, 0, 0));
-            m_lapTimer.AddLap(new TimeSpan(0, 0, minutes, 0, 0));
-            m_lapTimer.AddLap(new TimeSpan(0, 0, 0, seconds, 0));
-            m_lapTimer.AddLap(new TimeSpan(0, 0, 0, 0, millis));
+            _lapTimer.AddLap(new TimeSpan(days, 0, 0, 0, 0));
+            _lapTimer.AddLap(new TimeSpan(0, hours, 0, 0, 0));
+            _lapTimer.AddLap(new TimeSpan(0, 0, minutes, 0, 0));
+            _lapTimer.AddLap(new TimeSpan(0, 0, 0, seconds, 0));
+            _lapTimer.AddLap(new TimeSpan(0, 0, 0, 0, millis));
 
-            TimeSpan totalTime = m_lapTimer.GetTotalTime();
+            TimeSpan totalTime = _lapTimer.GetTotalTime();
 
             Assert.Equal(days, totalTime.Days);
             Assert.Equal(hours, totalTime.Hours);
@@ -127,7 +127,7 @@ namespace LapTimerServer.LibUnitTests
         [Fact]
         public void GetFastestLap_NoLaps_ReturnsLapWithZeros()
         {
-            Lap fastestLap = m_lapTimer.GetFastestLap();
+            Lap fastestLap = _lapTimer.GetFastestLap();
             TimeSpan zeroTime = new TimeSpan(0);
 
             Assert.Equal(0, fastestLap.Number);
@@ -138,9 +138,9 @@ namespace LapTimerServer.LibUnitTests
         public void GetFastestLap_Onelap()
         {
             int days = 0, hours = 0, minutes = 1, seconds = 32, millis = 480;
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis));
 
-            Lap fastestlap = m_lapTimer.GetFastestLap();
+            Lap fastestlap = _lapTimer.GetFastestLap();
 
             Assert.Equal(1, fastestlap.Number);
             Assert.Equal(days, fastestlap.Time.Days);
@@ -154,16 +154,16 @@ namespace LapTimerServer.LibUnitTests
         public void GetFastestLap_ManyLaps_FastestLapIsFirstlap()
         {
             int days = 0, hours = 0, minutes = 3, seconds = 14, millis = 791;
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis)); // fastest lap
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 10));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 1, millis));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes + 1, seconds, millis));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 250));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 1));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 30, millis + 600));
-            m_lapTimer.AddLap(new TimeSpan(days + 1, hours, minutes, seconds, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis)); // fastest lap
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 10));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 1, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes + 1, seconds, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 250));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 1));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 30, millis + 600));
+            _lapTimer.AddLap(new TimeSpan(days + 1, hours, minutes, seconds, millis));
 
-            Lap fastestlap = m_lapTimer.GetFastestLap();
+            Lap fastestlap = _lapTimer.GetFastestLap();
 
             Assert.Equal(1, fastestlap.Number);
             Assert.Equal(days, fastestlap.Time.Days);
@@ -177,16 +177,16 @@ namespace LapTimerServer.LibUnitTests
         public void GetFastestLap_ManyLaps_FastestLapIsMiddlelap()
         {
             int days = 0, hours = 0, minutes = 3, seconds = 14, millis = 791;
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 10));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 1, millis));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes + 1, seconds, millis));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 250));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis)); // fastest lap
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 1));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 30, millis + 600));
-            m_lapTimer.AddLap(new TimeSpan(days + 1, hours, minutes, seconds, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 10));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 1, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes + 1, seconds, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 250));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis)); // fastest lap
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 1));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 30, millis + 600));
+            _lapTimer.AddLap(new TimeSpan(days + 1, hours, minutes, seconds, millis));
 
-            Lap fastestlap = m_lapTimer.GetFastestLap();
+            Lap fastestlap = _lapTimer.GetFastestLap();
 
             Assert.Equal(5, fastestlap.Number);
             Assert.Equal(days, fastestlap.Time.Days);
@@ -200,16 +200,16 @@ namespace LapTimerServer.LibUnitTests
         public void GetFastestLap_ManyLaps_FastestLapIsLastLap()
         {
             int days = 0, hours = 0, minutes = 3, seconds = 14, millis = 791;
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 10));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 1, millis));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes + 1, seconds, millis));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 250));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 1));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 30, millis + 600));
-            m_lapTimer.AddLap(new TimeSpan(days + 1, hours, minutes, seconds, millis));
-            m_lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis)); // fastest lap
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 10));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 1, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes + 1, seconds, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 250));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis + 1));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds + 30, millis + 600));
+            _lapTimer.AddLap(new TimeSpan(days + 1, hours, minutes, seconds, millis));
+            _lapTimer.AddLap(new TimeSpan(days, hours, minutes, seconds, millis)); // fastest lap
 
-            Lap fastestlap = m_lapTimer.GetFastestLap();
+            Lap fastestlap = _lapTimer.GetFastestLap();
 
             Assert.Equal(8, fastestlap.Number);
             Assert.Equal(days, fastestlap.Time.Days);
