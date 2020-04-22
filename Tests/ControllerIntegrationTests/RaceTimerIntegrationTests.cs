@@ -11,6 +11,7 @@ using Xunit;
 using LapTimerServer.Lib;
 using System.ComponentModel.Design.Serialization;
 using System.Net;
+using System.Text;
 
 namespace LapTimerServer.Tests.ControllerIntegrationTests
 {
@@ -159,6 +160,62 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             Assert.Equal("success", startResponse.message);
             Assert.Equal(countDownDuration, startResponse.raceStartCountdownDuration);
             Assert.InRange(startResponse.millisSecondsUntilRaceStart, 0, countDownDuration);
+        }
+
+        [Fact]
+        public async Task GetRaceState_InitialStateIsRegistration()
+        {
+            var response = await _httpClient.GetAsync(prefix + "/GetRaceState");
+            response.EnsureSuccessStatusCode();
+
+            var stateResponse = JsonSerializer.Deserialize<ResponseObject.State>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal(RaceState.Registration, stateResponse.state);
+            Assert.Equal("Registration", stateResponse.stateName);
+        }
+
+        [Fact]
+        public async Task AddLapResult_Success()
+        {
+            string ipAddress = "10.1.1.1";
+
+            var registerResponse = await _httpClient.GetAsync(prefix + "/Register/" + ipAddress);
+            registerResponse.EnsureSuccessStatusCode();
+
+            var lapResult = new RequestObject.LapResult
+            {
+                ipAddress = ipAddress,
+                lapTime = "0:0:1:12"
+            };
+            var jsonString = JsonSerializer.Serialize(lapResult);
+            var lapContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(prefix + "/AddLapResult", lapContent);
+            //   response.EnsureSuccessStatusCode();
+            var responseObject = JsonSerializer.Deserialize<ResponseObject>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal("success", responseObject.message);
+        }
+
+        [Fact]
+        public async Task AddLapResult_NotRegisteredError()
+        {
+            var lapResult = new RequestObject.LapResult
+            {
+                ipAddress = "10.1.1.1",
+                lapTime = "0:0:1:12"
+            };
+            var jsonString = JsonSerializer.Serialize(lapResult);
+            var lapContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(prefix + "/AddLapResult", lapContent);
+            response.EnsureSuccessStatusCode();
+            var responseObject = JsonSerializer.Deserialize<ResponseObject>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal("The given ip address '10.1.1.1' is not registered.", responseObject.message);
         }
     }
 }

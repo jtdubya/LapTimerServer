@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LapTimerServer.Lib;
+using System.Globalization;
 
 namespace LapTimerServer.Controllers
 {
@@ -24,6 +25,7 @@ namespace LapTimerServer.Controllers
             _raceManager = raceManager;
         }
 
+        [HttpGet]
         public JsonResult GetMaxParticipants()
         {
             try
@@ -220,17 +222,93 @@ namespace LapTimerServer.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetRaceState()
+        public JsonResult GetRaceState()
         {
             try
             {
                 RaceState state = _raceManager.GetRaceState();
-                return Ok(state);
+
+                ResponseObject.State stateResponse = new ResponseObject.State
+                {
+                    message = "success",
+                    state = state,
+                    stateName = state.ToString()
+                };
+                return Json(stateResponse);
             }
             catch (Exception error)
             {
                 _logger.LogInformation("RaceTimer/GetRaceState Exception: " + error.Message);
-                return BadRequest(error.Message);
+
+                ResponseObject.State stateResponse = new ResponseObject.State
+                {
+                    message = "error.Message",
+                    state = 0,
+                    stateName = "error getting state"
+                };
+
+                return new JsonResult(stateResponse)
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+        }
+
+        /// <summary>
+        /// Adds a lap result. Lap results must be added sequentially.
+        /// </summary>
+        /// <remarks>
+        ///   Provided Lap Time string --> Parsed TimeSpan \
+        /// \
+        ///    6 --> 6.00:00:00 \
+        ///    6:12 --> 06:12:00 \
+        ///    6:12:14 --> 06:12:14 \
+        ///    6:12:14:45 --> 6.12:14:45 \
+        ///    6.12:14:45 --> 6.12:14:45 \
+        ///    6:12:14:45.3448 --> 6.12:14:45.3448000
+        ///
+        ///     Sample Request:
+        ///
+        ///     POST api/v1/RaceTimer/AddLapResult
+        ///     {
+        ///         "ipAddress": "192.168.1.20",
+        ///         "lapTime": "0:1:14:56"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="lapResult"></param>
+        /// <returns>Success or error message</returns>
+        [HttpPost]
+        public JsonResult AddLapResult([FromBody] RequestObject.LapResult lapResult)
+        {
+            try
+            {
+                IPAddress ipAddress = IPAddress.Parse(lapResult.ipAddress);
+                TimeSpan lapTime = TimeSpan.Parse(lapResult.lapTime, CultureInfo.InvariantCulture);
+                _raceManager.AddLapResult(ipAddress, lapTime);
+                return Json(new ResponseObject { message = "success" });
+            }
+            catch (Exception error)
+            {
+                _logger.LogInformation("RaceTimer/AddLapResult Exception: " + error.Message);
+
+                if (error is KeyNotFoundException)
+                {
+                    return Json(new ResponseObject
+                    {
+                        message = "The given ip address '" + lapResult.ipAddress + "' is not registered."
+                    });
+                }
+
+                ResponseObject response = new ResponseObject
+                {
+                    message = error.Message,
+                };
+
+                return new JsonResult(response)
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
             }
         }
     }

@@ -95,7 +95,7 @@ namespace LapTimerServer.LibUnitTests
         [Fact]
         public void GetRaceState_InitialState_StateIsIdle()
         {
-            Assert.Equal(RaceState.Idle, _raceManager.GetRaceState());
+            Assert.Equal(RaceState.Registration, _raceManager.GetRaceState());
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace LapTimerServer.LibUnitTests
             _raceManager.CancelCountdown();
             Thread.Sleep(5);
             Assert.Equal(-1, _raceManager.GetMillisecondsUntilRaceStart());
-            Assert.Equal(RaceState.Idle, _raceManager.GetRaceState());
+            Assert.Equal(RaceState.Registration, _raceManager.GetRaceState());
         }
 
         [Fact]

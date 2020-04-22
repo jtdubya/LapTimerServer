@@ -10,7 +10,7 @@ namespace LapTimerServer.Lib
 {
     public enum RaceState
     {
-        Idle, // better name?
+        Registration,
         StartCountdown,
         InProgress,
         FinishCountdown,
@@ -38,7 +38,7 @@ namespace LapTimerServer.Lib
         public RaceManager()
         {
             _maxParticipants = 2;
-            _raceState = RaceState.Idle;
+            _raceState = RaceState.Registration;
             _races = new List<Race>();
             _milliSecondsUntilRaceStart = -1;
             _milliSecondsUntilRaceFinish = -1;
@@ -68,13 +68,14 @@ namespace LapTimerServer.Lib
             return _races;
         }
 
+        // TODO decouple response object and just return an int that indicated status and let the controller add all the verbose messages
         public ResponseObject.Register Register(string ipAddressString)
         {
             int id = -1; // only set to positive number if registration is successful
             string message = string.Empty;
             string closedMessage = "Registration closed. ";
 
-            if (_raceState == RaceState.Idle)
+            if (_raceState == RaceState.Registration)
             {
                 try
                 {
@@ -101,11 +102,11 @@ namespace LapTimerServer.Lib
                 }
                 catch (FormatException)
                 {
-                    throw new FormatException("Could not parse IP address");
+                    throw new FormatException("Could not parse IP address.");
                 }
                 catch (ArgumentNullException)
                 {
-                    throw new ArgumentNullException("Must provide device IP address to register");
+                    throw new ArgumentNullException("Must provide device IP address to register.");
                 }
             }
             else
@@ -184,11 +185,15 @@ namespace LapTimerServer.Lib
         //      2. The finish count down expires
         // In case 1, the race duration ends with the last participant adding their result
         // In case 2, the race duration ends with the last car that added a result before the countdown expired
-        public void AddLapResult(IPAddress ipAddress, TimeSpan lapTime)
+        public void AddLapResult(IPAddress ipAddress, TimeSpan lapTime) // assuming all lap times are sent in order for now
         {
             Lap addedLap = _lapTimerManager.AddLapResult(ipAddress, lapTime);
             int id = _lapTimerManager.GetLapTimerByIPAddress(ipAddress).GetId();
-            _races.Last().AddLapResult(id, addedLap);
+
+            if (_raceState != RaceState.Registration && _raceState != RaceState.StartCountdown)
+            {
+                _races.Last().AddLapResult(id, addedLap);
+            }
 
             if (_raceState == RaceState.InProgress)
             {
@@ -259,7 +264,7 @@ namespace LapTimerServer.Lib
                     {
                         if (state == RaceState.StartCountdown)
                         {
-                            _raceState = RaceState.Idle;
+                            _raceState = RaceState.Registration;
                             _milliSecondsUntilRaceStart = -1;
                         }
                         else if (state == RaceState.FinishCountdown)

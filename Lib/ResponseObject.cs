@@ -11,6 +11,12 @@
             public int maxParticipants { get; set; }
         }
 
+        public class State : ResponseObject
+        {
+            public RaceState state { get; set; }
+            public string stateName { get; set; }
+        }
+
         public class Register : ResponseObject
         {
             public int id { get; set; }
