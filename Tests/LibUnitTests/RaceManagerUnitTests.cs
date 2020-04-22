@@ -30,11 +30,11 @@ namespace LapTimerServer.LibUnitTests
         [Fact]
         public void Register_IdleStateWithDuplicates_ReturnsRegisteredID()
         {
-            int first = _raceManager.Register("10.0.1.1").id;
-            int second = _raceManager.Register("10.0.1.2").id;
-            int secondDuplicate = _raceManager.Register("10.0.1.2").id;
-            int firstDuplicate = _raceManager.Register("10.0.1.1").id;
-            int firstTriplicate = _raceManager.Register("10.0.1.1").id;
+            int first = _raceManager.Register("10.0.1.1");
+            int second = _raceManager.Register("10.0.1.2");
+            int secondDuplicate = _raceManager.Register("10.0.1.2");
+            int firstDuplicate = _raceManager.Register("10.0.1.1");
+            int firstTriplicate = _raceManager.Register("10.0.1.1");
 
             Assert.Equal(1, first);
             Assert.Equal(1, firstDuplicate);
@@ -45,12 +45,12 @@ namespace LapTimerServer.LibUnitTests
         }
 
         [Fact]
-        public void Register_IdleState()
+        public void Register_RegisterState()
         {
             _raceManager.SetMaxParticipants(3);
-            int first = _raceManager.Register("10.0.1.1").id;
-            int second = _raceManager.Register("10.0.1.2").id;
-            int third = _raceManager.Register("10.0.1.3").id;
+            int first = _raceManager.Register("10.0.1.1");
+            int second = _raceManager.Register("10.0.1.2");
+            int third = _raceManager.Register("10.0.1.3");
 
             Assert.Equal(1, first);
             Assert.Equal(2, second);
@@ -59,37 +59,35 @@ namespace LapTimerServer.LibUnitTests
         }
 
         [Fact]
-        public void Register_IdleStateWithMoreThanMax_ReturnsBadIdAndMessage()
+        public void Register_RegisterStateWithMoreThanMax_ReturnsCode()
         {
             _raceManager.SetMaxParticipants(1);
             _raceManager.Register("10.0.1.1");
             var secondResponse = _raceManager.Register("10.0.1.2");
 
-            Assert.Equal(-1, secondResponse.id);
-            Assert.Contains("Registration closed. Max participants reached.", secondResponse.message);
+            Assert.Equal(-2, secondResponse);
         }
 
         [Fact]
-        public void Register_IdleStateWithBadIPAddress_ThrowsException()
+        public void Register_RegisterStateWithBadIPAddress_ThrowsException()
         {
             Exception exception = Assert.Throws<FormatException>(() => _raceManager.Register("l;sakdjfflsakdjf"));
             Assert.Contains("Could not parse IP address", exception.Message);
         }
 
         [Fact]
-        public void Register_IdleStateWithNullIPAddress_ThrowsException()
+        public void Register_RegisterStateWithNullIPAddress_ThrowsException()
         {
             Exception exception = Assert.Throws<ArgumentNullException>(() => _raceManager.Register(null));
             Assert.Contains("Must provide device IP address to register", exception.Message);
         }
 
         [Fact]
-        public void Register_NonIdleState_ThrowException()
+        public void Register_NonRegisterState_ReturnsCode()
         {
             _raceManager.StartRace();
             var response = _raceManager.Register("1.1.1.1");
-            Assert.Equal(-1, response.id);
-            Assert.Contains("Registration closed. Wait until next registration period.", response.message);
+            Assert.Equal(-1, response);
         }
 
         [Fact]

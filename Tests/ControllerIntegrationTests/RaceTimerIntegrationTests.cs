@@ -12,6 +12,7 @@ using LapTimerServer.Lib;
 using System.ComponentModel.Design.Serialization;
 using System.Net;
 using System.Text;
+using LapTimerServer.JsonObjects;
 
 namespace LapTimerServer.Tests.ControllerIntegrationTests
 {
@@ -115,7 +116,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
                 await response2.Content.ReadAsStringAsync()
                 );
 
-            Assert.Equal(-1, registerResponse.id);
+            Assert.Equal(-2, registerResponse.id);
             Assert.Contains("Registration closed. Max participants reached.", registerResponse.message);
         }
 

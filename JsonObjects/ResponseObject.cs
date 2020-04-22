@@ -1,4 +1,6 @@
-﻿namespace LapTimerServer.Lib
+﻿using LapTimerServer.Lib;
+
+namespace LapTimerServer.JsonObjects
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Json is all lowercase")]
     public class ResponseObject

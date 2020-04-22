@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LapTimerServer.Lib;
 using System.Globalization;
+using LapTimerServer.JsonObjects;
 
 namespace LapTimerServer.Controllers
 {
@@ -95,7 +96,28 @@ namespace LapTimerServer.Controllers
         {
             try
             {
-                ResponseObject.Register registerResponse = _raceManager.Register(iPAddress);
+                int registerCode = _raceManager.Register(iPAddress);
+                ResponseObject.Register registerResponse = new ResponseObject.Register();
+                registerResponse.id = registerCode;
+
+                if (registerCode > 0)
+                {
+                    registerResponse.message = "success";
+                }
+                else
+                {
+                    registerResponse.message = "Registration closed. ";
+
+                    if (registerCode == -1)
+                    {
+                        registerResponse.message += "Wait until next registration period.";
+                    }
+                    else if (registerCode == -2)
+                    {
+                        registerResponse.message += "Max participants reached.";
+                    }
+                }
+
                 return Json(registerResponse);
             }
             catch (Exception error)

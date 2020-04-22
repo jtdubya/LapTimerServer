@@ -68,12 +68,19 @@ namespace LapTimerServer.Lib
             return _races;
         }
 
-        // TODO decouple response object and just return an int that indicated status and let the controller add all the verbose messages
-        public ResponseObject.Register Register(string ipAddressString)
+        /// <summary>
+        /// Register a lap timer
+        /// </summary>
+        /// <param name="ipAddressString"></param>
+        /// <returns>
+        /// Either ID if successful or a negative code
+        /// Codes:
+        /// -1 = Registration closed (not in registration state)
+        /// -2 = Max participants reached
+        /// </returns>
+        public int Register(string ipAddressString)
         {
-            int id = -1; // only set to positive number if registration is successful
-            string message = string.Empty;
-            string closedMessage = "Registration closed. ";
+            int returnIdOrCode = -1;
 
             if (_raceState == RaceState.Registration)
             {
@@ -87,17 +94,16 @@ namespace LapTimerServer.Lib
                     {
                         if (_lapTimerManager.GetAllLapTimers().Count >= _maxParticipants)
                         {
-                            message = closedMessage + "Max participants reached.";
+                            returnIdOrCode = -2;
                         }
                         else
                         {
-                            id = _lapTimerManager.RegisterLapTimer(ipAddress);
-                            message = "success";
+                            returnIdOrCode = _lapTimerManager.RegisterLapTimer(ipAddress);
                         }
                     }
                     else
                     {
-                        id = lapTimer.GetId();
+                        returnIdOrCode = lapTimer.GetId();
                     }
                 }
                 catch (FormatException)
@@ -109,16 +115,8 @@ namespace LapTimerServer.Lib
                     throw new ArgumentNullException("Must provide device IP address to register.");
                 }
             }
-            else
-            {
-                message = closedMessage + "Wait until next registration period.";
-            }
 
-            return new ResponseObject.Register
-            {
-                id = id,
-                message = message
-            };
+            return returnIdOrCode;
         }
 
         public Dictionary<IPAddress, LapTimer> GetParticipants()
