@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace LapTimerServer.Lib
 {
@@ -7,12 +8,14 @@ namespace LapTimerServer.Lib
     {
         private DateTime _startTime;
         private DateTime _endTime;
+        private readonly Stopwatch _stopwatch;
         private readonly int _numberOfLaps;
         private readonly List<int> _finishedParticipants;
         private readonly Dictionary<int, List<Lap>> _participantsAndResults; // instead of storing results here, use DB and link with LapTimer's lap store
 
         public Race(int lapCount)
         {
+            _stopwatch = new Stopwatch();
             _numberOfLaps = lapCount;
             _finishedParticipants = new List<int>();
             _participantsAndResults = new Dictionary<int, List<Lap>>();
@@ -20,20 +23,32 @@ namespace LapTimerServer.Lib
 
         public DateTime Start()
         {
+            _stopwatch.Reset();
             _startTime = DateTime.Now;
+            _stopwatch.Start();
+            return _startTime;
+        }
+
+        public DateTime GetStartTime()
+        {
             return _startTime;
         }
 
         public DateTime Finish()
         {
+            _stopwatch.Stop();
             _endTime = DateTime.Now;
+            return _endTime;
+        }
+
+        public DateTime GetFinishTime()
+        {
             return _endTime;
         }
 
         public TimeSpan GetDuration()
         {
-            // {1/1/0001 12:00:00 AM}
-            return _endTime - _startTime;
+            return _stopwatch.Elapsed;
         }
 
         public int GetNumberOfLaps()

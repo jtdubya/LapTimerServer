@@ -97,7 +97,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var responseString = await response.Content.ReadAsStringAsync();
             var registerResponse = JsonSerializer.Deserialize<ResponseObject.Register>(responseString);
             Assert.Equal(1, registerResponse.id);
-            Assert.Equal("success", registerResponse.message);
+            Assert.Equal("success", registerResponse.responseMessage);
         }
 
         [Fact]
@@ -110,14 +110,14 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             response.EnsureSuccessStatusCode();
 
             var response2 = await _httpClient.GetAsync(prefix + "/Register/2.2.2.2");
-            response.EnsureSuccessStatusCode();
+            response2.EnsureSuccessStatusCode();
 
             var registerResponse = JsonSerializer.Deserialize<ResponseObject.Register>(
                 await response2.Content.ReadAsStringAsync()
                 );
 
             Assert.Equal(-2, registerResponse.id);
-            Assert.Contains("Registration closed. Max participants reached.", registerResponse.message);
+            Assert.Contains("Registration closed. Max participants reached.", registerResponse.responseMessage);
         }
 
         [Fact]
@@ -132,7 +132,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var responseString = await response.Content.ReadAsStringAsync();
             var registerResponse = JsonSerializer.Deserialize<ResponseObject.Register>(responseString);
             Assert.Equal(-1, registerResponse.id);
-            Assert.Contains("Registration closed. Wait until next registration period.", registerResponse.message);
+            Assert.Contains("Registration closed. Wait until next registration period.", registerResponse.responseMessage);
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.Equal(-1, registerResponse.id);
-            Assert.Contains("Could not parse IP address", registerResponse.message);
+            Assert.Contains("Could not parse IP address", registerResponse.responseMessage);
         }
 
         [Fact]
@@ -158,7 +158,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var startResponse = JsonSerializer.Deserialize<ResponseObject.Start>(
                 await response.Content.ReadAsStringAsync());
 
-            Assert.Equal("success", startResponse.message);
+            Assert.Equal("success", startResponse.responseMessage);
             Assert.Equal(countDownDuration, startResponse.raceStartCountdownDuration);
             Assert.InRange(startResponse.millisSecondsUntilRaceStart, 0, countDownDuration);
         }
@@ -197,7 +197,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var responseObject = JsonSerializer.Deserialize<ResponseObject>(
                 await response.Content.ReadAsStringAsync());
 
-            Assert.Equal("success", responseObject.message);
+            Assert.Equal("success", responseObject.responseMessage);
         }
 
         [Fact]
@@ -216,7 +216,98 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var responseObject = JsonSerializer.Deserialize<ResponseObject>(
                 await response.Content.ReadAsStringAsync());
 
-            Assert.Equal("The given ip address '10.1.1.1' is not registered.", responseObject.message);
+            Assert.Equal("The given ip address '10.1.1.1' is not registered.", responseObject.responseMessage);
+        }
+
+        [Fact]
+        public async Task GetCurrentRaceResults_NoRaces()
+        {
+            var response = await _httpClient.GetAsync(prefix + "/GetCurrentRaceResults");
+            response.EnsureSuccessStatusCode();
+            var responseObject = JsonSerializer.Deserialize<ResponseObject>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal("no races available", responseObject.responseMessage);
+        }
+
+        [Fact]
+        [Trait("Category", "Big Test")]
+        public async Task GetCurrentRaceResults_MultipleRaces()
+        {
+            string ip1 = "1.1.1.1";
+            string ip2 = "2.2.2.2";
+            var response = await _httpClient.GetAsync(prefix + "/SetMaxParticipants/" + 2);
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/Register/" + ip1);
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/Register/" + ip2);
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/SetRaceStartCountdownDuration/" + 0);
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/StartRace");
+            response.EnsureSuccessStatusCode();
+
+            // this test is dependent on the default number of laps being 10 (haven't implement a way to get or set it yet)
+            foreach (string ipAddress in new List<string> { ip2, ip1 })
+            {
+                for (int lap = 1; lap <= 10; lap++)
+                {
+                    var lapResult = new RequestObject.LapResult
+                    {
+                        ipAddress = ipAddress,
+                        lapTime = "0:0:1:" + lap
+                    };
+
+                    var jsonString = JsonSerializer.Serialize(lapResult);
+                    var lapContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    await _httpClient.PostAsync(prefix + "/AddLapResult", lapContent);
+                }
+            }
+
+            response = await _httpClient.GetAsync(prefix + "/GetCurrentRaceResults");
+            response.EnsureSuccessStatusCode();
+            var stringContent = await response.Content.ReadAsStringAsync();
+            var raceResult = JsonSerializer.Deserialize<ResponseObject.Race>(stringContent);
+
+            // duration is the only element that isn't deserialized correctly
+            var splitString = stringContent.Split("totalMilliseconds");
+            string millisecondsString = splitString[1]
+                .Split("totalMinutes")[0]
+                .Split(":")[1]
+                .Split(",")[0];
+            double durationMilliseconds = double.Parse(millisecondsString);
+
+            Assert.Equal("Finished", raceResult.raceState);
+            Assert.Equal(10, raceResult.numberOfLaps);
+            Assert.True(new DateTime() < raceResult.startTime, "start time should be greater than 0");
+            Assert.True(raceResult.startTime < raceResult.finishTime, "finish time should be greater than start time");
+            Assert.True(durationMilliseconds > 0, "duration should be greater than 0");
+            Assert.Equal(2, raceResult.finishOrder[0]);
+            Assert.Equal(1, raceResult.finishOrder[1]);
+
+            for (int i = 1; i < 3; i++)
+            {
+                Assert.Equal(i, raceResult.lapResults[i - 1].timerID);
+
+                for (int lap = 1; lap <= 10; lap++)
+                {
+                    Assert.Contains(lap + ":", raceResult.lapResults[i - 1].laps[lap - 1]);
+                    if (lap < 10)
+                    {
+                        Assert.Contains("00:01:0" + lap, raceResult.lapResults[i - 1].laps[lap - 1]);
+                    }
+                    else
+                    {
+                        Assert.Contains("00:01:" + lap, raceResult.lapResults[i - 1].laps[lap - 1]);
+                    }
+                }
+            }
+
+            Assert.Equal("success", raceResult.responseMessage);
         }
     }
 }

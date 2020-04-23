@@ -44,6 +44,7 @@ namespace LapTimerServer.Lib
             _milliSecondsUntilRaceFinish = -1;
             _lapTimerManager = new LapTimerManager(); // could change this to DI
             RaceStartCountdownDuration = 20000;
+            WaitForAllCarsToFinishDuration = 10000;
         }
 
         #region public methods
@@ -197,7 +198,14 @@ namespace LapTimerServer.Lib
             {
                 if (_races.Last().HasAnyParticipantFinished())
                 {
-                    FinishRace();
+                    if (_lapTimerManager.GetAllLapTimers().Count == 1)
+                    {
+                        FinishRace(0);
+                    }
+                    else
+                    {
+                        FinishRace();
+                    }
                 }
             }
             else if (_raceState == RaceState.FinishCountdown)
@@ -240,6 +248,17 @@ namespace LapTimerServer.Lib
         public List<int> GetFinishedParticipantsForLastRace()
         {
             return _races.Last().GetFinishedParticipants();
+        }
+
+        public Dictionary<int, List<Lap>> GetCurrentRaceResults()
+        {
+            Dictionary<int, List<Lap>> currentResults = new Dictionary<int, List<Lap>>();
+
+            if (_races.Count > 0)
+            {
+                currentResults = _races.Last().GetResults();
+            }
+            return currentResults;
         }
 
         #endregion public methods

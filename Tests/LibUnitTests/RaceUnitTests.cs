@@ -29,6 +29,8 @@ namespace LapTimerServer.LibUnitTests
             Assert.True(start < DateTime.Now);
         }
 
+        // duration isn't exactly the same as start time minus finish time because a stopwatch is used
+        // to get duration, which is slightly more accurate and allows for mid-race duration
         [Fact]
         public void GetDuration()
         {
@@ -36,7 +38,11 @@ namespace LapTimerServer.LibUnitTests
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.175));
             DateTime finish = _race.Finish();
 
-            Assert.Equal(finish - start, _race.GetDuration());
+            TimeSpan startToFinishDuration = finish - start;
+            double lowerBound = startToFinishDuration.TotalMilliseconds - 0.05;
+            double upperBound = startToFinishDuration.TotalMilliseconds + 0.05;
+
+            Assert.InRange(_race.GetDuration().TotalMilliseconds, lowerBound, upperBound);
         }
 
         [Fact]

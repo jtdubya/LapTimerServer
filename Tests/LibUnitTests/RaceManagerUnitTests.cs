@@ -99,7 +99,7 @@ namespace LapTimerServer.LibUnitTests
         [Fact]
         public void StartRaceAndGetRaceState_StateIsWaitingToStart()
         {
-            _raceManager.StartRace();
+            _raceManager.StartRace(10000);
             Assert.Equal(RaceState.StartCountdown, _raceManager.GetRaceState());
         }
 
@@ -264,6 +264,84 @@ namespace LapTimerServer.LibUnitTests
                 _raceManager.FinishRace(0);
             }
             Assert.Equal(raceCount, _raceManager.GetAllRaces().Count);
+        }
+
+        [Fact]
+        public void GetCurrentRaceResults_OneRace()
+        {
+            _raceManager.SetMaxParticipants(3);
+            var ip1 = IPAddress.Parse("1.1.1.1");
+            var ip2 = IPAddress.Parse("2.2.2.2");
+            var ip3 = IPAddress.Parse("3.3.3.3");
+            _raceManager.Register(ip1.ToString());
+            _raceManager.Register(ip2.ToString());
+            _raceManager.Register(ip3.ToString());
+
+            int numLaps = 5;
+            _raceManager.StartRace(0, numLaps);
+
+            for (int i = 0; i < numLaps; i++)
+            {
+                _raceManager.AddLapResult(ip1, new TimeSpan(0, 1, 1));
+                _raceManager.AddLapResult(ip2, new TimeSpan(0, 1, 2));
+                _raceManager.AddLapResult(ip3, new TimeSpan(0, 1, 3));
+            }
+
+            var raceResults = _raceManager.GetCurrentRaceResults();
+
+            Assert.Contains(1, raceResults.Keys);
+            Assert.Contains(2, raceResults.Keys);
+            Assert.Contains(3, raceResults.Keys);
+
+            for (int i = 1; i <= 3; i++)
+            {
+                var resultsFound = raceResults.TryGetValue(i, out List<Lap> timer1Laps);
+                Assert.True(resultsFound);
+
+                for (int lap = 0; lap < numLaps; lap++)
+                {
+                    Assert.Equal(new TimeSpan(0, 1, i), timer1Laps[lap].Time);
+                }
+            }
+        }
+
+        [Fact]
+        public void GetCurrentRaceResults_ManyRaces()
+        {
+            _raceManager.SetMaxParticipants(2);
+            var ip1 = IPAddress.Parse("1.1.1.1");
+            var ip2 = IPAddress.Parse("2.2.2.2");
+            _raceManager.Register(ip1.ToString());
+            _raceManager.Register(ip2.ToString());
+            int numLaps = 5;
+            int numRaces = 5;
+
+            for (int race = 1; race <= numRaces; race++)
+            {
+                _raceManager.StartRace(0, numLaps);
+
+                for (int i = 0; i < numLaps; i++)
+                {
+                    _raceManager.AddLapResult(ip1, new TimeSpan(0, race, 1));
+                    _raceManager.AddLapResult(ip2, new TimeSpan(0, race, 2));
+                }
+            }
+
+            var raceResults = _raceManager.GetCurrentRaceResults();
+
+            Assert.Contains(1, raceResults.Keys);
+            Assert.Contains(2, raceResults.Keys);
+
+            for (int id = 1; id < 3; id++)
+            {
+                var resultsFound = raceResults.TryGetValue(id, out List<Lap> timer1Laps);
+                Assert.True(resultsFound);
+
+                for (int lap = 0; lap < numLaps; lap++)
+                {
+                    Assert.Equal(new TimeSpan(0, numRaces, id), timer1Laps[lap].Time);
+                }
+            }
         }
     }
 }

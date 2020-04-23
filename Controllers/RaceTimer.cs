@@ -34,7 +34,7 @@ namespace LapTimerServer.Controllers
                 int max = _raceManager.GetMaxParticipants();
                 ResponseObject.Participants response = new ResponseObject.Participants
                 {
-                    message = "success",
+                    responseMessage = "success",
                     maxParticipants = max
                 };
                 return new JsonResult(response);
@@ -45,7 +45,7 @@ namespace LapTimerServer.Controllers
                 ResponseObject.Participants response = new ResponseObject.Participants
                 {
                     maxParticipants = -1,
-                    message = error.Message
+                    responseMessage = error.Message
                 };
 
                 return new JsonResult(response)
@@ -63,7 +63,7 @@ namespace LapTimerServer.Controllers
                 _raceManager.SetMaxParticipants(newMax);
                 ResponseObject.Participants response = new ResponseObject.Participants
                 {
-                    message = "success",
+                    responseMessage = "success",
                     maxParticipants = _raceManager.GetMaxParticipants()
                 };
                 return new JsonResult(response);
@@ -75,7 +75,7 @@ namespace LapTimerServer.Controllers
                 ResponseObject.Participants response = new ResponseObject.Participants
                 {
                     maxParticipants = _raceManager.GetMaxParticipants(),
-                    message = error.Message
+                    responseMessage = error.Message
                 };
 
                 return new JsonResult(response)
@@ -102,19 +102,19 @@ namespace LapTimerServer.Controllers
 
                 if (registerCode > 0)
                 {
-                    registerResponse.message = "success";
+                    registerResponse.responseMessage = "success";
                 }
                 else
                 {
-                    registerResponse.message = "Registration closed. ";
+                    registerResponse.responseMessage = "Registration closed. ";
 
                     if (registerCode == -1)
                     {
-                        registerResponse.message += "Wait until next registration period.";
+                        registerResponse.responseMessage += "Wait until next registration period.";
                     }
                     else if (registerCode == -2)
                     {
-                        registerResponse.message += "Max participants reached.";
+                        registerResponse.responseMessage += "Max participants reached.";
                     }
                 }
 
@@ -126,7 +126,7 @@ namespace LapTimerServer.Controllers
                 ResponseObject.Register registerResponse = new ResponseObject.Register
                 {
                     id = -1,
-                    message = error.Message
+                    responseMessage = error.Message
                 };
 
                 return new JsonResult(registerResponse)
@@ -144,7 +144,7 @@ namespace LapTimerServer.Controllers
                 _raceManager.StartRace();
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
-                    message = "success",
+                    responseMessage = "success",
                     millisSecondsUntilRaceStart = _raceManager.RaceStartCountdownDuration,
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
@@ -155,7 +155,7 @@ namespace LapTimerServer.Controllers
                 _logger.LogInformation("RaceTimer/StartRace Exception: " + error.Message);
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
-                    message = error.Message,
+                    responseMessage = error.Message,
                     millisSecondsUntilRaceStart = _raceManager.RaceStartCountdownDuration,
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
@@ -174,7 +174,7 @@ namespace LapTimerServer.Controllers
             {
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
-                    message = "success",
+                    responseMessage = "success",
                     millisSecondsUntilRaceStart = _raceManager.GetMillisecondsUntilRaceStart(),
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
@@ -185,7 +185,7 @@ namespace LapTimerServer.Controllers
                 _logger.LogInformation("RaceTimer/GetRaceStartCountdownDuration Exception: " + error.Message);
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
-                    message = error.Message,
+                    responseMessage = error.Message,
                     millisSecondsUntilRaceStart = _raceManager.GetMillisecondsUntilRaceStart(),
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
@@ -205,7 +205,7 @@ namespace LapTimerServer.Controllers
                 _raceManager.RaceStartCountdownDuration = newDuration;
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
-                    message = "success",
+                    responseMessage = "success",
                     millisSecondsUntilRaceStart = _raceManager.GetMillisecondsUntilRaceStart(),
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
@@ -216,7 +216,7 @@ namespace LapTimerServer.Controllers
                 _logger.LogInformation("RaceTimer/GetRaceStartCountdownDuration Exception: " + error.Message);
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
-                    message = error.Message,
+                    responseMessage = error.Message,
                     millisSecondsUntilRaceStart = _raceManager.GetMillisecondsUntilRaceStart(),
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
@@ -252,7 +252,7 @@ namespace LapTimerServer.Controllers
 
                 ResponseObject.State stateResponse = new ResponseObject.State
                 {
-                    message = "success",
+                    responseMessage = "success",
                     state = state,
                     stateName = state.ToString()
                 };
@@ -264,7 +264,7 @@ namespace LapTimerServer.Controllers
 
                 ResponseObject.State stateResponse = new ResponseObject.State
                 {
-                    message = "error.Message",
+                    responseMessage = "error.Message",
                     state = 0,
                     stateName = "error getting state"
                 };
@@ -308,7 +308,7 @@ namespace LapTimerServer.Controllers
                 IPAddress ipAddress = IPAddress.Parse(lapResult.ipAddress);
                 TimeSpan lapTime = TimeSpan.Parse(lapResult.lapTime, CultureInfo.InvariantCulture);
                 _raceManager.AddLapResult(ipAddress, lapTime);
-                return Json(new ResponseObject { message = "success" });
+                return Json(new ResponseObject { responseMessage = "success" });
             }
             catch (Exception error)
             {
@@ -318,13 +318,145 @@ namespace LapTimerServer.Controllers
                 {
                     return Json(new ResponseObject
                     {
-                        message = "The given ip address '" + lapResult.ipAddress + "' is not registered."
+                        responseMessage = "The given ip address '" + lapResult.ipAddress + "' is not registered."
                     });
                 }
 
                 ResponseObject response = new ResponseObject
                 {
-                    message = error.Message,
+                    responseMessage = error.Message,
+                };
+
+                return new JsonResult(response)
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+        }
+
+        //   Swagger fails to parse the response object so it's added in comments
+        /// <summary>
+        /// Get results for the current race (can be in progress or finished)
+        /// Note: null time will be "0001-01-01T00:00:00"
+        /// </summary>
+        /// <remarks>
+        /// Sample Response:
+        ///
+        ///     GET api/v1/RaceTimer/GetCurrentRaceResults
+        ///     {
+        ///        "raceState": "Finished",
+        ///        "numberOfLaps": 10,
+        ///        "startTime": "2020-04-22T17:40:20.2150886-05:00",
+        ///        "finishTime": "2020-04-22T17:41:20.0329489-05:00",
+        ///        "duration": {
+        ///            "ticks": 598178603,
+        ///            "days": 0,
+        ///            "hours": 0,
+        ///            "milliseconds": 817,
+        ///            "minutes": 0,
+        ///            "seconds": 59,
+        ///            "totalDays": 0.0006923363460648148,
+        ///            "totalHours": 0.016616072305555556,
+        ///            "totalMilliseconds": 59817.8603,
+        ///            "totalMinutes": 0.9969643383333333,
+        ///            "totalSeconds": 59.8178603
+        ///        },
+        ///        "finishOrder": [
+        ///            1,
+        ///            2
+        ///        ],
+        ///        "lapResults": [
+        ///            {
+        ///                "timerID": 1,
+        ///                "laps": [
+        ///                    "1: 00:01:10",
+        ///                    "2: 00:01:10",
+        ///                    "3: 00:01:10",
+        ///                    "4: 00:01:10",
+        ///                    "5: 00:01:10",
+        ///                    "6: 00:01:10",
+        ///                    "7: 00:01:10",
+        ///                    "8: 00:01:10",
+        ///                    "9: 00:01:10",
+        ///                    "10: 00:01:10"
+        ///                ]
+        ///        },
+        ///            {
+        ///                "timerID": 2,
+        ///                "laps": [
+        ///                    "1: 00:01:10",
+        ///                    "2: 00:01:10",
+        ///                    "3: 00:01:10",
+        ///                    "4: 00:01:10",
+        ///                    "5: 00:01:10",
+        ///                    "6: 00:01:10",
+        ///                    "7: 00:01:10",
+        ///                    "8: 00:01:10",
+        ///                    "9: 00:01:10",
+        ///                    "10: 00:01:10"
+        ///                ]
+        ///             }
+        ///       ],
+        ///       "responseMessage": "success"
+        ///    }
+        /// </remarks>
+        /// <returns>ResponseObject.Race</returns>
+        [HttpGet]
+        public JsonResult GetCurrentRaceResults()
+        {
+            try
+            {
+                List<Race> allRaces = _raceManager.GetAllRaces();
+
+                if (allRaces.Count < 1)
+                {
+                    ResponseObject emptyResponse = new ResponseObject
+                    {
+                        responseMessage = "no races available"
+                    };
+                    return Json(emptyResponse);
+                }
+
+                Race currentRace = allRaces.Last();
+                ResponseObject.Race raceResponse = new ResponseObject.Race { responseMessage = "success" };
+                raceResponse.raceState = _raceManager.GetRaceState().ToString();
+                raceResponse.numberOfLaps = currentRace.GetNumberOfLaps();
+                raceResponse.startTime = currentRace.GetStartTime();
+
+                if (_raceManager.GetRaceState() == RaceState.Finished)
+                {
+                    raceResponse.finishTime = currentRace.GetFinishTime();
+                }
+                raceResponse.duration = currentRace.GetDuration(); ;
+                raceResponse.finishOrder = currentRace.GetFinishedParticipants();
+
+                Dictionary<int, List<Lap>> raceResults = _raceManager.GetCurrentRaceResults();
+                List<ResponseObject.LapResult> lapResults = new List<ResponseObject.LapResult>();
+                foreach (var result in raceResults)
+                {
+                    ResponseObject.LapResult lapResult = new ResponseObject.LapResult
+                    {
+                        timerID = result.Key,
+                        laps = new List<string>()
+                    };
+
+                    foreach (Lap lap in result.Value)
+                    {
+                        lapResult.laps.Add(lap.ToString());
+                    }
+                    lapResults.Add(lapResult);
+                }
+
+                raceResponse.lapResults = lapResults;
+                return Json(raceResponse);
+            }
+            catch (Exception error)
+            {
+                _logger.LogInformation("RaceTimer/GetCurrentRaceResults Exception: " + error.Message);
+
+                ResponseObject response = new ResponseObject
+                {
+                    responseMessage = error.Message,
                 };
 
                 return new JsonResult(response)

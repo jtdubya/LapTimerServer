@@ -1,4 +1,6 @@
-﻿using LapTimerServer.Lib;
+﻿using System;
+using System.Collections.Generic;
+using LapTimerServer.Lib;
 
 namespace LapTimerServer.JsonObjects
 {
@@ -6,7 +8,7 @@ namespace LapTimerServer.JsonObjects
     public class ResponseObject
 
     {
-        public string message { get; set; }
+        public string responseMessage { get; set; }
 
         public class Participants : ResponseObject
         {
@@ -28,6 +30,25 @@ namespace LapTimerServer.JsonObjects
         {
             public long raceStartCountdownDuration { get; set; }
             public long millisSecondsUntilRaceStart { get; set; }
+        }
+
+        public class Race : ResponseObject
+        {
+            public string raceState { get; set; }
+            public int numberOfLaps { get; set; }
+            public DateTime startTime { get; set; }
+            public DateTime finishTime { get; set; }
+            public TimeSpan duration { get; set; }
+
+            public List<int> finishOrder { get; set; }
+
+            public List<LapResult> lapResults { get; set; }
+        }
+
+        public class LapResult
+        {
+            public int timerID { get; set; }
+            public List<string> laps { get; set; }
         }
     }
 }
