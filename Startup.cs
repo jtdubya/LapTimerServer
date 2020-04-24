@@ -56,7 +56,7 @@ namespace LapTimerServer
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //     app.UseHttpsRedirection(); // only using http over local network for now
 
             app.UseSwagger();
             app.UseSwaggerUI(config =>
