@@ -231,15 +231,24 @@ namespace LapTimerServer.Controllers
         [HttpGet]
         public ActionResult GetTimeUntilRaceStart()
         {
+            ResponseObject.TimeUntilStart timeUntilStartResponse = new ResponseObject.TimeUntilStart();
             try
             {
-                long time = _raceManager.GetMillisecondsUntilRaceStart();
-                return Ok(time);
+                timeUntilStartResponse.millisecondsUntilStart = _raceManager.GetMillisecondsUntilRaceStart();
+                timeUntilStartResponse.responseMessage = "success";
+
+                return Json(timeUntilStartResponse);
             }
             catch (Exception error)
             {
                 _logger.LogInformation("RaceTimer/GetTimeUntilRaceStart Exception: " + error.Message);
-                return BadRequest(error.Message);
+                timeUntilStartResponse.responseMessage = error.Message;
+                timeUntilStartResponse.millisecondsUntilStart = -1;
+
+                return new JsonResult(timeUntilStartResponse)
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                };
             }
         }
 

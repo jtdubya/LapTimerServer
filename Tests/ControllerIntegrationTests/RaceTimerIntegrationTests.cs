@@ -231,6 +231,37 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
         }
 
         [Fact]
+        public async Task GetTimeUntilRaceState_NotInStartCoundownState()
+        {
+            var response = await _httpClient.GetAsync(prefix + "/GetTimeUntilRaceStart");
+            response.EnsureSuccessStatusCode();
+            var responseObject = JsonSerializer.Deserialize<ResponseObject.TimeUntilStart>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal("success", responseObject.responseMessage);
+            Assert.Equal(-1, responseObject.millisecondsUntilStart);
+        }
+
+        [Fact]
+        public async Task GetTimeUntilRaceState_InStartCoundownState()
+        {
+            int countDownDuration = 1000;
+            var response = await _httpClient.GetAsync(prefix + "/SetRaceStartCountdownDuration/" + countDownDuration);
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/StartRace");
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/GetTimeUntilRaceStart");
+            response.EnsureSuccessStatusCode();
+            var responseObject = JsonSerializer.Deserialize<ResponseObject.TimeUntilStart>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal("success", responseObject.responseMessage);
+            Assert.InRange(responseObject.millisecondsUntilStart, 1, countDownDuration);
+        }
+
+        [Fact]
         [Trait("Category", "Big Test")]
         public async Task GetCurrentRaceResults_MultipleRaces()
         {

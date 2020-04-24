@@ -26,6 +26,11 @@ namespace LapTimerServer.JsonObjects
             public int id { get; set; }
         }
 
+        public class TimeUntilStart : ResponseObject
+        {
+            public long millisecondsUntilStart { get; set; }
+        }
+
         public class Start : ResponseObject
         {
             public long raceStartCountdownDuration { get; set; }
