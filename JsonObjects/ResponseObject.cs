@@ -28,6 +28,7 @@ namespace LapTimerServer.JsonObjects
 
         public class TimeUntilStart : ResponseObject
         {
+            public int numberOfLaps { get; set; }
             public long millisecondsUntilStart { get; set; }
         }
 

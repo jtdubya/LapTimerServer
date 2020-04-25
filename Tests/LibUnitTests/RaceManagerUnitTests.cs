@@ -188,7 +188,8 @@ namespace LapTimerServer.LibUnitTests
         {
             int numberOflaps = 5;
             _raceManager.Register("1.1.1.1");
-            _raceManager.StartRace(0, numberOflaps);
+            _raceManager.NumberOfLaps = numberOflaps;
+            _raceManager.StartRace(0);
 
             for (int i = 0; i < numberOflaps; i++)
             {
@@ -215,7 +216,8 @@ namespace LapTimerServer.LibUnitTests
             _raceManager.Register(ip2.ToString());
             _raceManager.Register(ip3.ToString());
 
-            _raceManager.StartRace(0, numberOflaps);
+            _raceManager.NumberOfLaps = numberOflaps;
+            _raceManager.StartRace(0);
 
             for (int i = 0; i < numberOflaps - 1; i++)
             {
@@ -278,7 +280,8 @@ namespace LapTimerServer.LibUnitTests
             _raceManager.Register(ip3.ToString());
 
             int numLaps = 5;
-            _raceManager.StartRace(0, numLaps);
+            _raceManager.NumberOfLaps = numLaps;
+            _raceManager.StartRace(0);
 
             for (int i = 0; i < numLaps; i++)
             {
@@ -315,10 +318,11 @@ namespace LapTimerServer.LibUnitTests
             _raceManager.Register(ip2.ToString());
             int numLaps = 5;
             int numRaces = 5;
+            _raceManager.NumberOfLaps = numLaps;
 
             for (int race = 1; race <= numRaces; race++)
             {
-                _raceManager.StartRace(0, numLaps);
+                _raceManager.StartRace(0);
 
                 for (int i = 0; i < numLaps; i++)
                 {

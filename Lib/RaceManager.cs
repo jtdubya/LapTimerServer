@@ -23,7 +23,6 @@ namespace LapTimerServer.Lib
     /// </summary>
     public class RaceManager
     {
-        private const int DefaultNumberOfLaps = 10;
         private int _maxParticipants;
         private long _milliSecondsUntilRaceStart;
         private long _milliSecondsUntilRaceFinish;
@@ -32,6 +31,7 @@ namespace LapTimerServer.Lib
         private CancellationTokenSource _cancellationTokenSource;
         private readonly LapTimerManager _lapTimerManager;
 
+        public int NumberOfLaps { get; set; } = 10;
         public long RaceStartCountdownDuration { get; set; }
         public long WaitForAllCarsToFinishDuration { get; set; }
 
@@ -134,8 +134,7 @@ namespace LapTimerServer.Lib
         /// Can start race from any state except InProgress or FinishCountdown
         /// </summary>
         /// <param name="countDownDuration"></param>
-        /// <param name="numberOfLaps"></param>
-        public void StartRace(long countDownDuration, int numberOfLaps = DefaultNumberOfLaps)
+        public void StartRace(long countDownDuration)
         {
             if (_raceState != RaceState.InProgress || _raceState != RaceState.FinishCountdown)
             {
@@ -146,7 +145,7 @@ namespace LapTimerServer.Lib
                 }
                 else
                 {
-                    Race race = new Race(numberOfLaps);
+                    Race race = new Race(NumberOfLaps);
                     var allTimers = _lapTimerManager.GetAllLapTimers();
                     foreach (var timer in allTimers)
                     {
