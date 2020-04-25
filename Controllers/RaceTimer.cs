@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LapTimerServer.Lib;
@@ -232,11 +229,12 @@ namespace LapTimerServer.Controllers
         public ActionResult GetTimeUntilRaceStart()
         {
             ResponseObject.TimeUntilStart timeUntilStartResponse = new ResponseObject.TimeUntilStart();
+            timeUntilStartResponse.numberOfLaps = _raceManager.NumberOfLaps;
+
             try
             {
                 timeUntilStartResponse.millisecondsUntilStart = _raceManager.GetMillisecondsUntilRaceStart();
                 timeUntilStartResponse.responseMessage = "success";
-
                 return Json(timeUntilStartResponse);
             }
             catch (Exception error)

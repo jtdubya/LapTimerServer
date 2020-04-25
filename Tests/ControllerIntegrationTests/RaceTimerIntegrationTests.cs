@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
@@ -9,7 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Xunit;
 using LapTimerServer.Lib;
-using System.ComponentModel.Design.Serialization;
 using System.Net;
 using System.Text;
 using LapTimerServer.JsonObjects;
@@ -257,6 +255,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var responseObject = JsonSerializer.Deserialize<ResponseObject.TimeUntilStart>(
                 await response.Content.ReadAsStringAsync());
 
+            Assert.Equal(new RaceManager().NumberOfLaps, responseObject.numberOfLaps);
             Assert.Equal("success", responseObject.responseMessage);
             Assert.InRange(responseObject.millisecondsUntilStart, 1, countDownDuration);
         }
