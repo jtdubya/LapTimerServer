@@ -184,5 +184,29 @@ namespace LapTimerServer.LibUnitTests
             Assert.Equal(timer2lap2, timer2AddedLaps[1].Time);
             Assert.Equal(timer2lap3, timer2AddedLaps[2].Time);
         }
+
+        [Fact]
+        public void GetLapTimerByID_NotFound()
+        {
+            Assert.Throws<KeyNotFoundException>(() => _lapTimerManager.GetLapTimerByID(8217123));
+        }
+
+        [Fact]
+        public void GetLapTimerByID_MultipleTimers()
+        {
+            _lapTimerManager.RegisterLapTimer(IPAddress.Parse("1.1.1.1"));
+            _lapTimerManager.RegisterLapTimer(IPAddress.Parse("1.1.1.2"));
+            _lapTimerManager.RegisterLapTimer(IPAddress.Parse("1.1.1.3"));
+            _lapTimerManager.RegisterLapTimer(IPAddress.Parse("1.1.1.4"));
+            _lapTimerManager.RegisterLapTimer(IPAddress.Parse("1.1.1.5"));
+            int id = _lapTimerManager.RegisterLapTimer(IPAddress.Parse("1.1.1.6"));
+            _lapTimerManager.RegisterLapTimer(IPAddress.Parse("1.1.1.7"));
+            _lapTimerManager.RegisterLapTimer(IPAddress.Parse("1.1.1.8"));
+            _lapTimerManager.RegisterLapTimer(IPAddress.Parse("1.1.1.9"));
+            _lapTimerManager.RegisterLapTimer(IPAddress.Parse("1.1.1.10"));
+            var timer = _lapTimerManager.GetLapTimerByID(id);
+
+            Assert.Equal(id, timer.GetId());
+        }
     }
 }

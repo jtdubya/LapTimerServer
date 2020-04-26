@@ -94,8 +94,10 @@ namespace LapTimerServer.Controllers
             try
             {
                 int registerCode = _raceManager.Register(iPAddress);
-                ResponseObject.Register registerResponse = new ResponseObject.Register();
-                registerResponse.id = registerCode;
+                ResponseObject.Register registerResponse = new ResponseObject.Register
+                {
+                    id = registerCode
+                };
 
                 if (registerCode > 0)
                 {
@@ -295,7 +297,7 @@ namespace LapTimerServer.Controllers
         ///    6:12:14:45 --> 6.12:14:45 \
         ///    6.12:14:45 --> 6.12:14:45 \
         ///    6:12:14:45.3448 --> 6.12:14:45.3448000
-        ///
+        ///    Note that the last value ".3448" is ticks, there are 10,000 Ticks per millisecond
         ///     Sample Request:
         ///
         ///     POST api/v1/RaceTimer/AddLapResult
@@ -308,7 +310,7 @@ namespace LapTimerServer.Controllers
         /// <param name="lapResult"></param>
         /// <returns>Success or error message</returns>
         [HttpPost]
-        public JsonResult AddLapResult([FromBody] RequestObject.LapResult lapResult)
+        public JsonResult AddLapResultAsString([FromBody] RequestObject.LapResult lapResult)
         {
             try
             {
@@ -335,6 +337,108 @@ namespace LapTimerServer.Controllers
                 };
 
                 return new JsonResult(response)
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AddLapResultInMilliseconds([FromBody] RequestObject.LapResultMilliseconds lapResultMilliseconds)
+        {
+            try
+            {
+                IPAddress ipAddress = IPAddress.Parse(lapResultMilliseconds.ipAddress);
+                TimeSpan lapTime = TimeSpan.FromMilliseconds(lapResultMilliseconds.lapTime);
+                _raceManager.AddLapResult(ipAddress, lapTime);
+                return Json(new ResponseObject { responseMessage = "success" });
+            }
+            catch (Exception error)
+            {
+                _logger.LogInformation("RaceTimer/AddLapResult Exception: " + error.Message);
+
+                if (error is KeyNotFoundException)
+                {
+                    return Json(new ResponseObject
+                    {
+                        responseMessage = "The given ip address '" + lapResultMilliseconds.ipAddress + "' is not registered."
+                    });
+                }
+
+                ResponseObject response = new ResponseObject
+                {
+                    responseMessage = error.Message,
+                };
+
+                return new JsonResult(response)
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+        }
+
+        [HttpGet("{id}")]
+        public JsonResult GetLastRaceResultById(int id)
+        {
+            ResponseObject.RaceResultByID raceResult = new ResponseObject.RaceResultByID
+            {
+                id = id,
+                responseMessage = "success"
+            };
+
+            try
+            {
+                if (_raceManager.GetRaceState() != RaceState.Finished)
+                {
+                    raceResult.responseMessage = "Race is not finished.";
+                    return Json(raceResult);
+                }
+
+                Race lastRace = _raceManager.GetAllRaces().Last();
+                int placeIndex = lastRace.GetFinishedParticipants().IndexOf(id); // -1 if not found
+                Dictionary<int, List<Lap>> raceResults = _raceManager.GetCurrentRaceResults();
+                bool idFound = raceResults.TryGetValue(id, out List<Lap> laps);
+
+                if (placeIndex < 0 || !idFound)
+                {
+                    raceResult.responseMessage = "ID [" + id + "] was not found.";
+                    return Json(raceResult);
+                }
+
+                raceResult.place = placeIndex + 1;
+                Lap fastestLap = new Lap(0, new TimeSpan(0));
+                TimeSpan totalTime = new TimeSpan();
+
+                for (int i = 0; i < laps.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        fastestLap = laps[0];
+                        fastestLap.Number = laps[0].Number;
+                    }
+                    else if (laps[i].Time < fastestLap.Time)
+                    {
+                        fastestLap = laps[i];
+                    }
+                    totalTime += laps[i].Time;
+                }
+
+                raceResult.overallTime = totalTime.ToString();
+                raceResult.overallTimeMilliseconds = totalTime.TotalMilliseconds;
+                raceResult.fastestLap = fastestLap.Time.ToString();
+                raceResult.fastestLapMilliseconds = fastestLap.Time.TotalMilliseconds;
+                raceResult.fastestLapNumber = fastestLap.Number;
+
+                return Json(raceResult);
+            }
+            catch (Exception error)
+            {
+                _logger.LogInformation("RaceTimer/GetLastRaceResultById Exception: " + error.Message);
+
+                raceResult.responseMessage = error.Message;
+
+                return new JsonResult(raceResult)
+
                 {
                     StatusCode = (int)HttpStatusCode.BadRequest
                 };
@@ -419,7 +523,7 @@ namespace LapTimerServer.Controllers
                 {
                     ResponseObject emptyResponse = new ResponseObject
                     {
-                        responseMessage = "no races available"
+                        responseMessage = "No races available."
                     };
                     return Json(emptyResponse);
                 }

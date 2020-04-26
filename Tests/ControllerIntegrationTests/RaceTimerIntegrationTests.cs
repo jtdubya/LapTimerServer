@@ -190,12 +190,24 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var jsonString = JsonSerializer.Serialize(lapResult);
             var lapContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync(prefix + "/AddLapResult", lapContent);
-            //   response.EnsureSuccessStatusCode();
+            var response = await _httpClient.PostAsync(prefix + "/AddLapResultAsString", lapContent);
             var responseObject = JsonSerializer.Deserialize<ResponseObject>(
                 await response.Content.ReadAsStringAsync());
 
             Assert.Equal("success", responseObject.responseMessage);
+
+            var lapResultMillis = new RequestObject.LapResultMilliseconds
+            {
+                ipAddress = ipAddress,
+                lapTime = 123456
+            };
+            var jsonString2 = JsonSerializer.Serialize(lapResultMillis);
+            var lapContent2 = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var response2 = await _httpClient.PostAsync(prefix + "/AddLapResultInMilliseconds", lapContent);
+            var responseObject2 = JsonSerializer.Deserialize<ResponseObject>(
+                await response.Content.ReadAsStringAsync());
+            Assert.Equal("success", responseObject2.responseMessage);
         }
 
         [Fact]
@@ -209,23 +221,12 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var jsonString = JsonSerializer.Serialize(lapResult);
             var lapContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync(prefix + "/AddLapResult", lapContent);
+            var response = await _httpClient.PostAsync(prefix + "/AddLapResultAsString", lapContent);
             response.EnsureSuccessStatusCode();
             var responseObject = JsonSerializer.Deserialize<ResponseObject>(
                 await response.Content.ReadAsStringAsync());
 
             Assert.Equal("The given ip address '10.1.1.1' is not registered.", responseObject.responseMessage);
-        }
-
-        [Fact]
-        public async Task GetCurrentRaceResults_NoRaces()
-        {
-            var response = await _httpClient.GetAsync(prefix + "/GetCurrentRaceResults");
-            response.EnsureSuccessStatusCode();
-            var responseObject = JsonSerializer.Deserialize<ResponseObject>(
-                await response.Content.ReadAsStringAsync());
-
-            Assert.Equal("no races available", responseObject.responseMessage);
         }
 
         [Fact]
@@ -261,6 +262,130 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
         }
 
         [Fact]
+        public async Task GetLastRaceResultById_RaceIsNotFinished()
+        {
+            int id = 1;
+            var response = await _httpClient.GetAsync(prefix + "/GetLastRaceResultById/" + id);
+            response.EnsureSuccessStatusCode();
+            var raceResult = JsonSerializer.Deserialize<ResponseObject.RaceResultByID>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal(id, raceResult.id);
+            Assert.Equal("Race is not finished.", raceResult.responseMessage);
+        }
+
+        [Fact]
+        public async Task GetLastRaceResultById_IdNotFound()
+        {
+            string ip = "1.1.1.1";
+            var response = await _httpClient.GetAsync(prefix + "/Register/" + ip);
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/SetRaceStartCountdownDuration/" + 0);
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/StartRace");
+            response.EnsureSuccessStatusCode();
+
+            // this test is dependent on the default number of laps being 10 (haven't implement a way to change it yet)
+            for (int lap = 1; lap <= 10; lap++)
+            {
+                var lapResult = new RequestObject.LapResult
+                {
+                    ipAddress = ip,
+                    lapTime = "0:0:1:0"
+                };
+
+                var jsonString = JsonSerializer.Serialize(lapResult);
+                var lapContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                await _httpClient.PostAsync(prefix + "/AddLapResultAsString", lapContent);
+            }
+
+            response = await _httpClient.GetAsync(prefix + "/GetLastRaceResultById/" + 4356);
+            response.EnsureSuccessStatusCode();
+            var raceResult = JsonSerializer.Deserialize<ResponseObject.RaceResultByID>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal(4356, raceResult.id);
+            Assert.Equal("ID [4356] was not found.", raceResult.responseMessage);
+        }
+
+        [Fact]
+        [Trait("Category", "Big Test")]
+        public async Task GetLastRaceResultById_MultipleIDs()
+        {
+            string ip1 = "1.1.1.1";
+            string ip2 = "2.2.2.2";
+            string ip3 = "3.3.3.3";
+            var response = await _httpClient.GetAsync(prefix + "/SetMaxParticipants/" + 3);
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/Register/" + ip1);
+            response.EnsureSuccessStatusCode();
+            response = await _httpClient.GetAsync(prefix + "/Register/" + ip2);
+            response.EnsureSuccessStatusCode();
+            var ip2response = JsonSerializer.Deserialize<ResponseObject.Register>(
+                await response.Content.ReadAsStringAsync());
+            int id2 = ip2response.id;
+
+            response = await _httpClient.GetAsync(prefix + "/Register/" + ip3);
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/SetRaceStartCountdownDuration/" + 0);
+            response.EnsureSuccessStatusCode();
+
+            response = await _httpClient.GetAsync(prefix + "/StartRace");
+            response.EnsureSuccessStatusCode();
+
+            // this test is dependent on the default number of laps being 10 (haven't implement a way to change it yet)
+            for (int lap = 1; lap <= 10; lap++)
+            {
+                var lapResult = new RequestObject.LapResultMilliseconds
+                {
+                    lapTime = 61010
+                };
+
+                if (lap == 3)
+                {
+                    lapResult.lapTime = 59015; // fastest lap
+                }
+
+                foreach (string ipAddress in new List<string> { ip3, ip2, ip1 })
+                {
+                    lapResult.ipAddress = ipAddress;
+                    var jsonString = JsonSerializer.Serialize(lapResult);
+                    var lapContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    await _httpClient.PostAsync(prefix + "/AddLapResultInMilliseconds", lapContent);
+                }
+            }
+
+            response = await _httpClient.GetAsync(prefix + "/GetLastRaceResultById/" + id2);
+            response.EnsureSuccessStatusCode();
+            var raceResult = JsonSerializer.Deserialize<ResponseObject.RaceResultByID>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal("success", raceResult.responseMessage);
+            Assert.Equal(id2, raceResult.id);
+            Assert.Equal(2, raceResult.place);
+            Assert.Equal("00:10:08.1050000", raceResult.overallTime);
+            Assert.Equal(608105, raceResult.overallTimeMilliseconds);
+            Assert.Equal("00:00:59.0150000", raceResult.fastestLap);
+            Assert.Equal(59015, raceResult.fastestLapMilliseconds);
+            Assert.Equal(3, raceResult.fastestLapNumber);
+        }
+
+        [Fact]
+        public async Task GetCurrentRaceResults_NoRaces()
+        {
+            var response = await _httpClient.GetAsync(prefix + "/GetCurrentRaceResults");
+            response.EnsureSuccessStatusCode();
+            var responseObject = JsonSerializer.Deserialize<ResponseObject>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal("No races available.", responseObject.responseMessage);
+        }
+
+        [Fact]
         [Trait("Category", "Big Test")]
         public async Task GetCurrentRaceResults_MultipleRaces()
         {
@@ -281,27 +406,27 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             response = await _httpClient.GetAsync(prefix + "/StartRace");
             response.EnsureSuccessStatusCode();
 
-            // this test is dependent on the default number of laps being 10 (haven't implement a way to get or set it yet)
-            foreach (string ipAddress in new List<string> { ip2, ip1 })
+            // this test is dependent on the default number of laps being 10 (haven't implement a way to change it yet)
+            for (int lap = 1; lap <= 10; lap++)
             {
-                for (int lap = 1; lap <= 10; lap++)
+                var lapResult = new RequestObject.LapResult
                 {
-                    var lapResult = new RequestObject.LapResult
-                    {
-                        ipAddress = ipAddress,
-                        lapTime = "0:0:1:" + lap
-                    };
+                    lapTime = "0:0:1:" + lap
+                };
 
+                foreach (string ipAddress in new List<string> { ip2, ip1 })
+                {
+                    lapResult.ipAddress = ipAddress;
                     var jsonString = JsonSerializer.Serialize(lapResult);
                     var lapContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-                    await _httpClient.PostAsync(prefix + "/AddLapResult", lapContent);
+                    await _httpClient.PostAsync(prefix + "/AddLapResultAsString", lapContent);
                 }
             }
 
             response = await _httpClient.GetAsync(prefix + "/GetCurrentRaceResults");
             response.EnsureSuccessStatusCode();
             var stringContent = await response.Content.ReadAsStringAsync();
-            var raceResult = JsonSerializer.Deserialize<ResponseObject.Race>(stringContent);
+            var raceResults = JsonSerializer.Deserialize<ResponseObject.Race>(stringContent);
 
             // duration is the only element that isn't deserialized correctly
             var splitString = stringContent.Split("totalMilliseconds");
@@ -311,33 +436,33 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
                 .Split(",")[0];
             double durationMilliseconds = double.Parse(millisecondsString);
 
-            Assert.Equal("Finished", raceResult.raceState);
-            Assert.Equal(10, raceResult.numberOfLaps);
-            Assert.True(new DateTime() < raceResult.startTime, "start time should be greater than 0");
-            Assert.True(raceResult.startTime < raceResult.finishTime, "finish time should be greater than start time");
+            Assert.Equal("Finished", raceResults.raceState);
+            Assert.Equal(10, raceResults.numberOfLaps);
+            Assert.True(new DateTime() < raceResults.startTime, "start time should be greater than 0");
+            Assert.True(raceResults.startTime < raceResults.finishTime, "finish time should be greater than start time");
             Assert.True(durationMilliseconds > 0, "duration should be greater than 0");
-            Assert.Equal(2, raceResult.finishOrder[0]);
-            Assert.Equal(1, raceResult.finishOrder[1]);
+            Assert.Equal(2, raceResults.finishOrder[0]);
+            Assert.Equal(1, raceResults.finishOrder[1]);
 
             for (int i = 1; i < 3; i++)
             {
-                Assert.Equal(i, raceResult.lapResults[i - 1].timerID);
+                Assert.Equal(i, raceResults.lapResults[i - 1].timerID);
 
                 for (int lap = 1; lap <= 10; lap++)
                 {
-                    Assert.Contains(lap + ":", raceResult.lapResults[i - 1].laps[lap - 1]);
+                    Assert.Contains(lap + ":", raceResults.lapResults[i - 1].laps[lap - 1]);
                     if (lap < 10)
                     {
-                        Assert.Contains("00:01:0" + lap, raceResult.lapResults[i - 1].laps[lap - 1]);
+                        Assert.Contains("00:01:0" + lap, raceResults.lapResults[i - 1].laps[lap - 1]);
                     }
                     else
                     {
-                        Assert.Contains("00:01:" + lap, raceResult.lapResults[i - 1].laps[lap - 1]);
+                        Assert.Contains("00:01:" + lap, raceResults.lapResults[i - 1].laps[lap - 1]);
                     }
                 }
             }
 
-            Assert.Equal("success", raceResult.responseMessage);
+            Assert.Equal("success", raceResults.responseMessage);
         }
     }
 }

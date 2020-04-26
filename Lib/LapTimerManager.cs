@@ -48,6 +48,18 @@ namespace LapTimerServer.Lib
             return existingtimer;
         }
 
+        public LapTimer GetLapTimerByID(int id)
+        {
+            foreach (var lapTimer in _lapTimers.Values)
+            {
+                if (lapTimer.GetId() == id)
+                {
+                    return lapTimer;
+                }
+            }
+            throw new KeyNotFoundException("ID [" + id + "] was not found");
+        }
+
         public Dictionary<IPAddress, LapTimer> GetAllLapTimers()
         {
             return _lapTimers;

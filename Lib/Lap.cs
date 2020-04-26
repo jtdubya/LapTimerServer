@@ -2,7 +2,7 @@
 
 namespace LapTimerServer.Lib
 {
-    public readonly struct Lap
+    public struct Lap
     {
         public Lap(int lapNumber, TimeSpan lapTime)
         {
@@ -10,10 +10,10 @@ namespace LapTimerServer.Lib
             Time = lapTime;
         }
 
-        public int Number { get; }
+        public int Number { get; set; }
 
         public TimeSpan Time { get; }
 
-        public readonly override string ToString() => $"{Number}: {Time}";
+        public override string ToString() => $"{Number}: {Time}";
     }
 }

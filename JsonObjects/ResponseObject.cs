@@ -38,6 +38,12 @@ namespace LapTimerServer.JsonObjects
             public long millisSecondsUntilRaceStart { get; set; }
         }
 
+        public class LapResult
+        {
+            public int timerID { get; set; }
+            public List<string> laps { get; set; }
+        }
+
         public class Race : ResponseObject
         {
             public string raceState { get; set; }
@@ -51,10 +57,15 @@ namespace LapTimerServer.JsonObjects
             public List<LapResult> lapResults { get; set; }
         }
 
-        public class LapResult
+        public class RaceResultByID : ResponseObject // this is meant to be a much smaller response than the Race response object
         {
-            public int timerID { get; set; }
-            public List<string> laps { get; set; }
+            public int id { get; set; }
+            public int place { get; set; }
+            public string overallTime { get; set; }
+            public double overallTimeMilliseconds { get; set; } // milliseconds are easier to parse by software clients
+            public string fastestLap { get; set; }
+            public double fastestLapMilliseconds { get; set; }
+            public int fastestLapNumber { get; set; }
         }
     }
 }
