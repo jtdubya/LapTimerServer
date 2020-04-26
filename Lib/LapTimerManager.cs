@@ -65,6 +65,14 @@ namespace LapTimerServer.Lib
             return _lapTimers;
         }
 
+        public void ResetAllLaps()
+        {
+            foreach (var lapTimer in _lapTimers.Values)
+            {
+                lapTimer.ResetLaps();
+            }
+        }
+
         public Lap AddLapResult(IPAddress iPAddress, TimeSpan lapTime)
         {
             return _lapTimers[iPAddress].AddLap(lapTime);

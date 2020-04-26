@@ -7,12 +7,12 @@ namespace LapTimerServer.Lib
     public class LapTimer
     {
         private readonly int _id;
-        private readonly List<Lap> _laps;
+        private List<Lap> _laps;
 
         public LapTimer(int id)
         {
             _id = id;
-            _laps = new List<Lap>();
+            ResetLaps();
         }
 
         public int GetId()
@@ -51,6 +51,11 @@ namespace LapTimerServer.Lib
             }
 
             return totalTime;
+        }
+
+        public void ResetLaps()
+        {
+            _laps = new List<Lap>();
         }
 
         public Lap GetFastestLap()
