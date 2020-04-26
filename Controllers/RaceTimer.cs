@@ -230,8 +230,10 @@ namespace LapTimerServer.Controllers
         [HttpGet]
         public ActionResult GetTimeUntilRaceStart()
         {
-            ResponseObject.TimeUntilStart timeUntilStartResponse = new ResponseObject.TimeUntilStart();
-            timeUntilStartResponse.numberOfLaps = _raceManager.NumberOfLaps;
+            ResponseObject.TimeUntilStart timeUntilStartResponse = new ResponseObject.TimeUntilStart
+            {
+                numberOfLaps = _raceManager.NumberOfLaps
+            };
 
             try
             {
