@@ -202,11 +202,11 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
                 lapTime = 123456
             };
             var jsonString2 = JsonSerializer.Serialize(lapResultMillis);
-            var lapContent2 = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            var lapContent2 = new StringContent(jsonString2, Encoding.UTF8, "application/json");
 
-            var response2 = await _httpClient.PostAsync(prefix + "/AddLapResultInMilliseconds", lapContent);
+            var response2 = await _httpClient.PostAsync(prefix + "/AddLapResultInMilliseconds", lapContent2);
             var responseObject2 = JsonSerializer.Deserialize<ResponseObject>(
-                await response.Content.ReadAsStringAsync());
+                await response2.Content.ReadAsStringAsync());
             Assert.Equal("success", responseObject2.responseMessage);
         }
 
