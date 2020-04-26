@@ -43,7 +43,7 @@ namespace LapTimerServer.Lib
             _milliSecondsUntilRaceStart = -1;
             _milliSecondsUntilRaceFinish = -1;
             _lapTimerManager = new LapTimerManager(); // could change this to DI
-            RaceStartCountdownDuration = 20000;
+            RaceStartCountdownDuration = 5999;
             WaitForAllCarsToFinishDuration = 10000;
         }
 
@@ -264,6 +264,7 @@ namespace LapTimerServer.Lib
             bool raceStarted = false;
             if (_raceState == RaceState.Registration || _raceState == RaceState.StartCountdown || _raceState == RaceState.Finished)
             {
+                _lapTimerManager.ResetAllLaps();
                 Race race = new Race(NumberOfLaps);
                 var allTimers = _lapTimerManager.GetAllLapTimers();
                 foreach (var timer in allTimers)
