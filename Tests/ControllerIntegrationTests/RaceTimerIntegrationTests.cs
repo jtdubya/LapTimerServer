@@ -121,11 +121,14 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
         [Fact]
         public async Task Register_RegistrationNotOpen()
         {
+            var response = await _httpClient.GetAsync(prefix + "/Register/1.1.1.1");
+            response.EnsureSuccessStatusCode();
+
             var startResponse = await _httpClient.GetAsync(prefix + "/StartRace");
             startResponse.EnsureSuccessStatusCode();
             Thread.Sleep(5);
 
-            var response = await _httpClient.GetAsync(prefix + "/Register/1.1.1.1");
+            response = await _httpClient.GetAsync(prefix + "/Register/1.1.1.2");
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
             var registerResponse = JsonSerializer.Deserialize<ResponseObject.Register>(responseString);
@@ -146,7 +149,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
         }
 
         [Fact]
-        public async Task StartRace()
+        public async Task StartRace_NoTimersRegistered()
         {
             int countDownDuration = 10000;
             var setResponse = await _httpClient.GetAsync(prefix + "/SetRaceStartCountdownDuration/" + countDownDuration);
@@ -156,9 +159,25 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var startResponse = JsonSerializer.Deserialize<ResponseObject.Start>(
                 await response.Content.ReadAsStringAsync());
 
+            Assert.Equal("StartRace fail: no lap timers registered.", startResponse.responseMessage);
+            Assert.Equal(countDownDuration, startResponse.raceStartCountdownDuration);
+        }
+
+        [Fact]
+        public async Task StartRace_Success()
+        {
+            var response = await _httpClient.GetAsync(prefix + "/Register/1.1.1.1");
+            response.EnsureSuccessStatusCode();
+            int countDownDuration = 10000;
+            response = await _httpClient.GetAsync(prefix + "/SetRaceStartCountdownDuration/" + countDownDuration);
+            response.EnsureSuccessStatusCode();
+            response = await _httpClient.GetAsync(prefix + "/StartRace");
+            response.EnsureSuccessStatusCode();
+            var startResponse = JsonSerializer.Deserialize<ResponseObject.Start>(
+                await response.Content.ReadAsStringAsync());
+
             Assert.Equal("success", startResponse.responseMessage);
             Assert.Equal(countDownDuration, startResponse.raceStartCountdownDuration);
-            Assert.InRange(startResponse.millisSecondsUntilRaceStart, 0, countDownDuration);
         }
 
         [Fact]
@@ -226,7 +245,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             var responseObject = JsonSerializer.Deserialize<ResponseObject>(
                 await response.Content.ReadAsStringAsync());
 
-            Assert.Equal("The given ip address '10.1.1.1' is not registered.", responseObject.responseMessage);
+            Assert.Equal("The given IP address '10.1.1.1' is not registered.", responseObject.responseMessage);
         }
 
         [Fact]
@@ -242,11 +261,21 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
         }
 
         [Fact]
+        [Trait("Category", "Slow Test")]
         public async Task GetTimeUntilRaceState_InStartCoundownState()
         {
-            int countDownDuration = 1000;
-            var response = await _httpClient.GetAsync(prefix + "/SetRaceStartCountdownDuration/" + countDownDuration);
+            var response = await _httpClient.GetAsync(prefix + "/Register/1.1.1.1");
             response.EnsureSuccessStatusCode();
+            int countDownDuration = 200;
+            response = await _httpClient.GetAsync(prefix + "/SetRaceStartCountdownDuration/" + countDownDuration);
+            response.EnsureSuccessStatusCode();
+            response = await _httpClient.GetAsync(prefix + "/StartRace");
+            response.EnsureSuccessStatusCode();
+            var startResponse = JsonSerializer.Deserialize<ResponseObject.Start>(
+                await response.Content.ReadAsStringAsync());
+
+            Assert.Equal("success", startResponse.responseMessage);
+            Assert.Equal(countDownDuration, startResponse.raceStartCountdownDuration);
 
             response = await _httpClient.GetAsync(prefix + "/StartRace");
             response.EnsureSuccessStatusCode();
@@ -259,6 +288,19 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
             Assert.Equal(new RaceManager().NumberOfLaps, responseObject.numberOfLaps);
             Assert.Equal("success", responseObject.responseMessage);
             Assert.InRange(responseObject.millisecondsUntilStart, 1, countDownDuration);
+
+            while (responseObject.millisecondsUntilStart > 0)
+            {
+                Thread.Sleep(50);
+                long lastCountdownduration = responseObject.millisecondsUntilStart;
+                response = await _httpClient.GetAsync(prefix + "/GetTimeUntilRaceStart");
+                response.EnsureSuccessStatusCode();
+                responseObject = JsonSerializer.Deserialize<ResponseObject.TimeUntilStart>(
+                    await response.Content.ReadAsStringAsync());
+                Assert.Equal(new RaceManager().NumberOfLaps, responseObject.numberOfLaps);
+                Assert.Equal("success", responseObject.responseMessage);
+                Assert.InRange(responseObject.millisecondsUntilStart, 0, lastCountdownduration);
+            }
         }
 
         [Fact]
@@ -311,7 +353,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
         }
 
         [Fact]
-        [Trait("Category", "Big Test")]
+        [Trait("Category", "Slow Test")]
         public async Task GetLastRaceResultById_MultipleIDs()
         {
             string ip1 = "1.1.1.1";
@@ -386,7 +428,7 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
         }
 
         [Fact]
-        [Trait("Category", "Big Test")]
+        [Trait("Category", "Slow Test")]
         public async Task GetCurrentRaceResults_MultipleRaces()
         {
             string ip1 = "1.1.1.1";

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using LapTimerServer.Lib;
 using System.Globalization;
 using LapTimerServer.JsonObjects;
+using Newtonsoft.Json;
 
 namespace LapTimerServer.Controllers
 {
@@ -26,6 +27,7 @@ namespace LapTimerServer.Controllers
         [HttpGet]
         public JsonResult GetMaxParticipants()
         {
+            _logger.LogInformation("GET /GetMaxParticipants");
             try
             {
                 int max = _raceManager.GetMaxParticipants();
@@ -38,7 +40,7 @@ namespace LapTimerServer.Controllers
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/GetMaxParticipants Exception: " + error.Message);
+                _logger.LogError("RaceTimer/GetMaxParticipants Exception: " + error.Message);
                 ResponseObject.Participants response = new ResponseObject.Participants
                 {
                     maxParticipants = -1,
@@ -55,6 +57,7 @@ namespace LapTimerServer.Controllers
         [HttpGet("{newMax}")]
         public JsonResult SetMaxParticipants(int newMax)
         {
+            _logger.LogInformation("GET /SetMaxParticipants/" + newMax);
             try
             {
                 _raceManager.SetMaxParticipants(newMax);
@@ -67,7 +70,7 @@ namespace LapTimerServer.Controllers
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/SetMaxParticipants Exception: " + error.Message);
+                _logger.LogError("RaceTimer/SetMaxParticipants Exception: " + error.Message);
 
                 ResponseObject.Participants response = new ResponseObject.Participants
                 {
@@ -91,6 +94,7 @@ namespace LapTimerServer.Controllers
         [HttpGet("{iPAddress}")]
         public JsonResult Register(string iPAddress)
         {
+            _logger.LogInformation("GET /Register/" + iPAddress);
             try
             {
                 int registerCode = _raceManager.Register(iPAddress);
@@ -121,7 +125,7 @@ namespace LapTimerServer.Controllers
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/Register Exception: " + error.Message);
+                _logger.LogError("RaceTimer/Register Exception: " + error.Message);
                 ResponseObject.Register registerResponse = new ResponseObject.Register
                 {
                     id = -1,
@@ -138,24 +142,40 @@ namespace LapTimerServer.Controllers
         [HttpGet]
         public JsonResult StartRace()
         {
+            _logger.LogInformation("GET /StartRace");
             try
             {
-                _raceManager.StartRace();
+                string failPrefix = "StartRace fail: ";
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
-                    responseMessage = "success",
-                    millisSecondsUntilRaceStart = _raceManager.RaceStartCountdownDuration,
-                    raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
+                    raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration,
                 };
+
+                if (_raceManager.GetParticipants().Count == 0)
+                {
+                    startResponse.responseMessage = failPrefix + "no lap timers registered.";
+                }
+                else
+                {
+                    bool success = _raceManager.StartRace();
+                    if (success)
+                    {
+                        startResponse.responseMessage = "success";
+                    }
+                    else
+                    {
+                        startResponse.responseMessage = failPrefix + "cannot start race in state " + _raceManager.GetRaceState().ToString();
+                    }
+                }
+
                 return Json(startResponse);
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/StartRace Exception: " + error.Message);
+                _logger.LogError("RaceTimer/StartRace Exception: " + error.Message);
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
                     responseMessage = error.Message,
-                    millisSecondsUntilRaceStart = _raceManager.RaceStartCountdownDuration,
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
 
@@ -169,23 +189,22 @@ namespace LapTimerServer.Controllers
         [HttpGet]
         public JsonResult GetRaceStartCountdownDuration()
         {
+            _logger.LogInformation("GET /GetRaceStartCountdownDuration");
             try
             {
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
                     responseMessage = "success",
-                    millisSecondsUntilRaceStart = _raceManager.GetMillisecondsUntilRaceStart(),
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
                 return Json(startResponse);
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/GetRaceStartCountdownDuration Exception: " + error.Message);
+                _logger.LogError("RaceTimer/GetRaceStartCountdownDuration Exception: " + error.Message);
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
                     responseMessage = error.Message,
-                    millisSecondsUntilRaceStart = _raceManager.GetMillisecondsUntilRaceStart(),
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
 
@@ -199,24 +218,23 @@ namespace LapTimerServer.Controllers
         [HttpGet("{newDuration}")]
         public JsonResult SetRaceStartCountdownDuration(long newDuration)
         {
+            _logger.LogInformation("GET /SetRaceStartCountdownDuration/" + newDuration);
             try
             {
                 _raceManager.RaceStartCountdownDuration = newDuration;
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
                     responseMessage = "success",
-                    millisSecondsUntilRaceStart = _raceManager.GetMillisecondsUntilRaceStart(),
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
                 return Json(startResponse);
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/GetRaceStartCountdownDuration Exception: " + error.Message);
+                _logger.LogError("RaceTimer/GetRaceStartCountdownDuration Exception: " + error.Message);
                 ResponseObject.Start startResponse = new ResponseObject.Start
                 {
                     responseMessage = error.Message,
-                    millisSecondsUntilRaceStart = _raceManager.GetMillisecondsUntilRaceStart(),
                     raceStartCountdownDuration = _raceManager.RaceStartCountdownDuration
                 };
 
@@ -230,6 +248,7 @@ namespace LapTimerServer.Controllers
         [HttpGet]
         public ActionResult GetTimeUntilRaceStart()
         {
+            _logger.LogInformation("GET /GetTimeUntilRaceStart");
             ResponseObject.TimeUntilStart timeUntilStartResponse = new ResponseObject.TimeUntilStart
             {
                 numberOfLaps = _raceManager.NumberOfLaps
@@ -243,7 +262,7 @@ namespace LapTimerServer.Controllers
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/GetTimeUntilRaceStart Exception: " + error.Message);
+                _logger.LogError("RaceTimer/GetTimeUntilRaceStart Exception: " + error.Message);
                 timeUntilStartResponse.responseMessage = error.Message;
                 timeUntilStartResponse.millisecondsUntilStart = -1;
 
@@ -257,6 +276,7 @@ namespace LapTimerServer.Controllers
         [HttpGet]
         public JsonResult GetRaceState()
         {
+            _logger.LogInformation("GET /GetRaceState");
             try
             {
                 RaceState state = _raceManager.GetRaceState();
@@ -271,7 +291,7 @@ namespace LapTimerServer.Controllers
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/GetRaceState Exception: " + error.Message);
+                _logger.LogError("RaceTimer/GetRaceState Exception: " + error.Message);
 
                 ResponseObject.State stateResponse = new ResponseObject.State
                 {
@@ -314,6 +334,8 @@ namespace LapTimerServer.Controllers
         [HttpPost]
         public JsonResult AddLapResultAsString([FromBody] RequestObject.LapResult lapResult)
         {
+            _logger.LogInformation("POST /AddLapResultAsString \n\tBODY: ipAddress:" + lapResult.ipAddress + " | lapTime: " + lapResult.lapTime);
+
             try
             {
                 IPAddress ipAddress = IPAddress.Parse(lapResult.ipAddress);
@@ -323,13 +345,13 @@ namespace LapTimerServer.Controllers
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/AddLapResult Exception: " + error.Message);
+                _logger.LogError("RaceTimer/AddLapResult Exception: " + error.Message);
 
                 if (error is KeyNotFoundException)
                 {
                     return Json(new ResponseObject
                     {
-                        responseMessage = "The given ip address '" + lapResult.ipAddress + "' is not registered."
+                        responseMessage = "The given IP address '" + lapResult.ipAddress + "' is not registered."
                     });
                 }
 
@@ -348,6 +370,7 @@ namespace LapTimerServer.Controllers
         [HttpPost]
         public JsonResult AddLapResultInMilliseconds([FromBody] RequestObject.LapResultMilliseconds lapResultMilliseconds)
         {
+            _logger.LogInformation("POST /AddLapResultInMilliseconds \n\tBODY: ipAddress:" + lapResultMilliseconds.ipAddress + " | lapTime: " + lapResultMilliseconds.lapTime);
             try
             {
                 IPAddress ipAddress = IPAddress.Parse(lapResultMilliseconds.ipAddress);
@@ -357,13 +380,13 @@ namespace LapTimerServer.Controllers
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/AddLapResult Exception: " + error.Message);
+                _logger.LogError("RaceTimer/AddLapResult Exception: " + error.Message);
 
                 if (error is KeyNotFoundException)
                 {
                     return Json(new ResponseObject
                     {
-                        responseMessage = "The given ip address '" + lapResultMilliseconds.ipAddress + "' is not registered."
+                        responseMessage = "The given IP address '" + lapResultMilliseconds.ipAddress + "' is not registered."
                     });
                 }
 
@@ -382,6 +405,7 @@ namespace LapTimerServer.Controllers
         [HttpGet("{id}")]
         public JsonResult GetLastRaceResultById(int id)
         {
+            _logger.LogInformation("GET /GetLastRaceResultById");
             ResponseObject.RaceResultByID raceResult = new ResponseObject.RaceResultByID
             {
                 id = id,
@@ -435,7 +459,7 @@ namespace LapTimerServer.Controllers
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/GetLastRaceResultById Exception: " + error.Message);
+                _logger.LogError("RaceTimer/GetLastRaceResultById Exception: " + error.Message);
 
                 raceResult.responseMessage = error.Message;
 
@@ -517,6 +541,7 @@ namespace LapTimerServer.Controllers
         [HttpGet]
         public JsonResult GetCurrentRaceResults()
         {
+            _logger.LogInformation("GET /GetCurrentRaceResults");
             try
             {
                 List<Race> allRaces = _raceManager.GetAllRaces();
@@ -565,7 +590,7 @@ namespace LapTimerServer.Controllers
             }
             catch (Exception error)
             {
-                _logger.LogInformation("RaceTimer/GetCurrentRaceResults Exception: " + error.Message);
+                _logger.LogError("RaceTimer/GetCurrentRaceResults Exception: " + error.Message);
 
                 ResponseObject response = new ResponseObject
                 {

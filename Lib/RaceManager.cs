@@ -125,38 +125,33 @@ namespace LapTimerServer.Lib
             return _lapTimerManager.GetAllLapTimers();
         }
 
-        public void StartRace()
+        public bool StartRace()
         {
-            StartRace(RaceStartCountdownDuration);
+            return StartRace(RaceStartCountdownDuration);
         }
 
         /// <summary>
-        /// Can start race from any state except InProgress or FinishCountdown
+        /// Can start race from Registration or Finished state
         /// </summary>
         /// <param name="countDownDuration"></param>
-        public void StartRace(long countDownDuration)
+        public bool StartRace(long countDownDuration)
         {
-            if (_raceState != RaceState.InProgress || _raceState != RaceState.FinishCountdown)
+            bool raceStarted = false;
+            if (_raceState == RaceState.Registration || _raceState == RaceState.Finished)
             {
                 if (countDownDuration > 0)
                 {
                     _raceState = RaceState.StartCountdown;
+                    _milliSecondsUntilRaceStart = RaceStartCountdownDuration;
                     CountdownToRaceStage(RaceState.StartCountdown, countDownDuration);
+                    raceStarted = true;
                 }
                 else
                 {
-                    Race race = new Race(NumberOfLaps);
-                    var allTimers = _lapTimerManager.GetAllLapTimers();
-                    foreach (var timer in allTimers)
-                    {
-                        race.AddParticipant(timer.Value.GetId());
-                    }
-                    race.Start();
-                    _races.Add(race);
-                    _raceState = RaceState.InProgress;
-                    _milliSecondsUntilRaceStart = 0;
+                    raceStarted = StartRaceNow();
                 }
             }
+            return raceStarted;
         }
 
         public long GetMillisecondsUntilRaceStart()
@@ -264,6 +259,26 @@ namespace LapTimerServer.Lib
 
         #region private methods
 
+        public bool StartRaceNow()
+        {
+            bool raceStarted = false;
+            if (_raceState == RaceState.Registration || _raceState == RaceState.StartCountdown || _raceState == RaceState.Finished)
+            {
+                Race race = new Race(NumberOfLaps);
+                var allTimers = _lapTimerManager.GetAllLapTimers();
+                foreach (var timer in allTimers)
+                {
+                    race.AddParticipant(timer.Value.GetId());
+                }
+                race.Start();
+                _races.Add(race);
+                _raceState = RaceState.InProgress;
+                _milliSecondsUntilRaceStart = 0;
+                raceStarted = true;
+            }
+            return raceStarted;
+        }
+
         // made this non-static to use member fields, but we also need to make sure there is only one...
         private Task CountdownToRaceStage(RaceState state, long countDownDuration)
         {
@@ -306,7 +321,7 @@ namespace LapTimerServer.Lib
                 // Countdown completed
                 if (state == RaceState.StartCountdown)
                 {
-                    StartRace(0);
+                    StartRaceNow();
                 }
                 else if (state == RaceState.FinishCountdown)
                 {
