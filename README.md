@@ -1,5 +1,5 @@
 # LapTimerServer
-This is a backend server with API for the Lap Timer system. It contain an ASP.Net Core 3.1 Web API that IoT lap timers like [this one](https://github.com/jtdubya/IoTLapTimer) 
+This is a backend server with API for the Lap Timer system. It contain an ASP.Net Core 3.1 Web API that works with IoT lap timers like [this one](https://github.com/jtdubya/IoTLapTimer) 
 
 ## Current Features
 1. Register lap timers
@@ -9,7 +9,8 @@ This is a backend server with API for the Lap Timer system. It contain an ASP.Ne
 1. Get current race results for a specific lap timer
 
 ## Getting started
-* Build the project, run it and view the Swagger to view and test endpoints
+* Build and run the project
+* Swagger is accessible from the root URL to view and test endpoints
 * Check out the [integration tests](Tests/ControllerIntegrationTests/RaceTimerIntegrationTests.cs) to see the RaceTimer controller behavior
 
 ## Race Manager
