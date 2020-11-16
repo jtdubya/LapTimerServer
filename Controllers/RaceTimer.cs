@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using LapTimerServer.Lib;
 using System.Globalization;
 using LapTimerServer.JsonObjects;
-using Newtonsoft.Json;
 
 namespace LapTimerServer.Controllers
 {
@@ -17,11 +16,13 @@ namespace LapTimerServer.Controllers
     {
         private readonly ILogger<RaceTimer> _logger;
         private readonly RaceManager _raceManager;
+        private readonly LapTimeAnnouncer.LapTimeAnnouncer _lapTimeAnnouncer;
 
-        public RaceTimer(ILogger<RaceTimer> logger, RaceManager raceManager)
+        public RaceTimer(ILogger<RaceTimer> logger, RaceManager raceManager, LapTimeAnnouncer.LapTimeAnnouncer lapTimeAnnouncer)
         {
             _logger = logger;
             _raceManager = raceManager;
+            _lapTimeAnnouncer = lapTimeAnnouncer;
         }
 
         [HttpGet]
@@ -601,6 +602,21 @@ namespace LapTimerServer.Controllers
                 {
                     StatusCode = (int)HttpStatusCode.BadRequest
                 };
+            }
+        }
+
+        [HttpPost]
+        public StatusCodeResult AnnounceLapTime([FromBody] RequestObject.LapResultMilliseconds lapTimeMilliseconds)
+        {
+            try
+            {
+                _lapTimeAnnouncer.Announce(lapTimeMilliseconds.lapTime / 1000);
+                return new StatusCodeResult((int)HttpStatusCode.OK);
+            }
+            catch (Exception error)
+            {
+                _logger.LogError("RaceTimer/AnnounceLapTime Exception: " + error);
+                return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
             }
         }
     }

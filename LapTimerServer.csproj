@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LapTimeAnnouncer" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.2" />
@@ -18,5 +19,344 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\0.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\10.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\11.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\12.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\13.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\14.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\15.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\16.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\17.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\18.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\19.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\20.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\21.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\22.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\23.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\24.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\25.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\26.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\27.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\28.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\29.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\30.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\31.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\32.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\33.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\34.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\35.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\36.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\37.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\38.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\39.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\4.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\40.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\41.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\42.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\43.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\44.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\45.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\46.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\47.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\48.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\49.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\5.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\50.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\51.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\52.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\53.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\54.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\55.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\56.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\57.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\58.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\59.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\6.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\60.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\61.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\62.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\63.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\64.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\65.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\66.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\67.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\68.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\69.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\7.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\70.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\71.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\72.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\73.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\74.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\75.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\76.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\77.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\78.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\79.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\8.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\80.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\81.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\82.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\83.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\84.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\85.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\86.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\87.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\88.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\89.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\9.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\90.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\91.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\92.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\93.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\94.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\95.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\96.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\97.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\98.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\99.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\flat.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o4.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o5.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o6.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o7.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o8.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o9.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\tooSlow.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\zeroPoint.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

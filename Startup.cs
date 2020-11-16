@@ -8,6 +8,9 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
 using LapTimerServer.Lib;
+using LapTimeAnnouncer.CrossPlatform;
+using Microsoft.Extensions.Logging;
+using LapTimeAnnouncer;
 
 namespace LapTimerServer
 {
@@ -25,6 +28,12 @@ namespace LapTimerServer
         {
             services.AddControllers();
             services.AddSingleton<RaceManager>();
+            services.AddSingleton((serviceProvider) =>
+            {
+                AudioFilePlayerFactory audioFilePlayerFactory = new AudioFilePlayerFactory(serviceProvider.GetRequiredService<ILogger<AudioFilePlayerFactory>>());
+                IAudioFilePlayer audioPlayer = audioFilePlayerFactory.CreateWavPlayer();
+                return new LapTimeAnnouncer.LapTimeAnnouncer(audioPlayer, "audio");
+            });
 
             services.AddSwaggerGen(c =>
             {

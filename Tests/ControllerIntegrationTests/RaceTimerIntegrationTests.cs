@@ -506,5 +506,19 @@ namespace LapTimerServer.Tests.ControllerIntegrationTests
 
             Assert.Equal("success", raceResults.responseMessage);
         }
+
+        [Fact]
+        public async Task AnnounceLapTime()
+        {
+            var lapResult = new RequestObject.LapResultMilliseconds
+            {
+                lapTime = 1100
+            };
+            var jsonString = JsonSerializer.Serialize(lapResult);
+            var lapContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(prefix + "/AnnounceLapTime", lapContent);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }
