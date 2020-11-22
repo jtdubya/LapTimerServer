@@ -32,7 +32,7 @@ namespace LapTimerServer
             {
                 AudioFilePlayerFactory audioFilePlayerFactory = new AudioFilePlayerFactory(serviceProvider.GetRequiredService<ILogger<AudioFilePlayerFactory>>());
                 IAudioFilePlayer audioPlayer = audioFilePlayerFactory.CreateWavPlayer();
-                return new LapTimeAnnouncer(audioPlayer, @"Lib\Audio\WavFiles");
+                return new LapTimeAnnouncer(audioPlayer, @"Lib/Audio/WavFiles");
             });
 
             services.AddSwaggerGen(c =>

@@ -5,7 +5,7 @@ namespace LapTimerServer.Lib.Audio
 {
     public class LinuxWavFilePlayer : IAudioFilePlayer
     {
-        private const string CommandPrefix = "-c \"/usr/bin/aplay \"";
+        private const string CommandPrefix = "-c \"/usr/bin/omxplayer \"";
 
         public void Play(string filename)
         {
