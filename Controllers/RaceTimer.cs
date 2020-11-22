@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using LapTimerServer.Lib;
 using System.Globalization;
 using LapTimerServer.JsonObjects;
+using LapTimerServer.Lib.Audio;
 
 namespace LapTimerServer.Controllers
 {
@@ -16,9 +17,9 @@ namespace LapTimerServer.Controllers
     {
         private readonly ILogger<RaceTimer> _logger;
         private readonly RaceManager _raceManager;
-        private readonly LapTimeAnnouncer.LapTimeAnnouncer _lapTimeAnnouncer;
+        private readonly LapTimeAnnouncer _lapTimeAnnouncer;
 
-        public RaceTimer(ILogger<RaceTimer> logger, RaceManager raceManager, LapTimeAnnouncer.LapTimeAnnouncer lapTimeAnnouncer)
+        public RaceTimer(ILogger<RaceTimer> logger, RaceManager raceManager, LapTimeAnnouncer lapTimeAnnouncer)
         {
             _logger = logger;
             _raceManager = raceManager;

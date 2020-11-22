@@ -1,362 +1,478 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <IsPackable>false</IsPackable>
-    <GenerateProgramFile>false</GenerateProgramFile>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <GenerateProgramFile>false</GenerateProgramFile>
 
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
-  </PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="LapTimeAnnouncer" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.2" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.2" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+    <ItemGroup>
+      <None Remove="Lib\Audio\WavFiles\0.wav" />
+      <None Remove="Lib\Audio\WavFiles\1.wav" />
+      <None Remove="Lib\Audio\WavFiles\10.wav" />
+      <None Remove="Lib\Audio\WavFiles\11.wav" />
+      <None Remove="Lib\Audio\WavFiles\12.wav" />
+      <None Remove="Lib\Audio\WavFiles\13.wav" />
+      <None Remove="Lib\Audio\WavFiles\14.wav" />
+      <None Remove="Lib\Audio\WavFiles\15.wav" />
+      <None Remove="Lib\Audio\WavFiles\16.wav" />
+      <None Remove="Lib\Audio\WavFiles\17.wav" />
+      <None Remove="Lib\Audio\WavFiles\18.wav" />
+      <None Remove="Lib\Audio\WavFiles\19.wav" />
+      <None Remove="Lib\Audio\WavFiles\2.wav" />
+      <None Remove="Lib\Audio\WavFiles\20.wav" />
+      <None Remove="Lib\Audio\WavFiles\21.wav" />
+      <None Remove="Lib\Audio\WavFiles\22.wav" />
+      <None Remove="Lib\Audio\WavFiles\23.wav" />
+      <None Remove="Lib\Audio\WavFiles\24.wav" />
+      <None Remove="Lib\Audio\WavFiles\25.wav" />
+      <None Remove="Lib\Audio\WavFiles\26.wav" />
+      <None Remove="Lib\Audio\WavFiles\27.wav" />
+      <None Remove="Lib\Audio\WavFiles\28.wav" />
+      <None Remove="Lib\Audio\WavFiles\29.wav" />
+      <None Remove="Lib\Audio\WavFiles\3.wav" />
+      <None Remove="Lib\Audio\WavFiles\30.wav" />
+      <None Remove="Lib\Audio\WavFiles\31.wav" />
+      <None Remove="Lib\Audio\WavFiles\32.wav" />
+      <None Remove="Lib\Audio\WavFiles\33.wav" />
+      <None Remove="Lib\Audio\WavFiles\34.wav" />
+      <None Remove="Lib\Audio\WavFiles\35.wav" />
+      <None Remove="Lib\Audio\WavFiles\36.wav" />
+      <None Remove="Lib\Audio\WavFiles\37.wav" />
+      <None Remove="Lib\Audio\WavFiles\38.wav" />
+      <None Remove="Lib\Audio\WavFiles\39.wav" />
+      <None Remove="Lib\Audio\WavFiles\4.wav" />
+      <None Remove="Lib\Audio\WavFiles\40.wav" />
+      <None Remove="Lib\Audio\WavFiles\41.wav" />
+      <None Remove="Lib\Audio\WavFiles\42.wav" />
+      <None Remove="Lib\Audio\WavFiles\43.wav" />
+      <None Remove="Lib\Audio\WavFiles\44.wav" />
+      <None Remove="Lib\Audio\WavFiles\45.wav" />
+      <None Remove="Lib\Audio\WavFiles\46.wav" />
+      <None Remove="Lib\Audio\WavFiles\47.wav" />
+      <None Remove="Lib\Audio\WavFiles\48.wav" />
+      <None Remove="Lib\Audio\WavFiles\49.wav" />
+      <None Remove="Lib\Audio\WavFiles\5.wav" />
+      <None Remove="Lib\Audio\WavFiles\50.wav" />
+      <None Remove="Lib\Audio\WavFiles\51.wav" />
+      <None Remove="Lib\Audio\WavFiles\52.wav" />
+      <None Remove="Lib\Audio\WavFiles\53.wav" />
+      <None Remove="Lib\Audio\WavFiles\54.wav" />
+      <None Remove="Lib\Audio\WavFiles\55.wav" />
+      <None Remove="Lib\Audio\WavFiles\56.wav" />
+      <None Remove="Lib\Audio\WavFiles\57.wav" />
+      <None Remove="Lib\Audio\WavFiles\58.wav" />
+      <None Remove="Lib\Audio\WavFiles\59.wav" />
+      <None Remove="Lib\Audio\WavFiles\6.wav" />
+      <None Remove="Lib\Audio\WavFiles\60.wav" />
+      <None Remove="Lib\Audio\WavFiles\61.wav" />
+      <None Remove="Lib\Audio\WavFiles\62.wav" />
+      <None Remove="Lib\Audio\WavFiles\63.wav" />
+      <None Remove="Lib\Audio\WavFiles\64.wav" />
+      <None Remove="Lib\Audio\WavFiles\65.wav" />
+      <None Remove="Lib\Audio\WavFiles\66.wav" />
+      <None Remove="Lib\Audio\WavFiles\67.wav" />
+      <None Remove="Lib\Audio\WavFiles\68.wav" />
+      <None Remove="Lib\Audio\WavFiles\69.wav" />
+      <None Remove="Lib\Audio\WavFiles\7.wav" />
+      <None Remove="Lib\Audio\WavFiles\70.wav" />
+      <None Remove="Lib\Audio\WavFiles\71.wav" />
+      <None Remove="Lib\Audio\WavFiles\72.wav" />
+      <None Remove="Lib\Audio\WavFiles\73.wav" />
+      <None Remove="Lib\Audio\WavFiles\74.wav" />
+      <None Remove="Lib\Audio\WavFiles\75.wav" />
+      <None Remove="Lib\Audio\WavFiles\76.wav" />
+      <None Remove="Lib\Audio\WavFiles\77.wav" />
+      <None Remove="Lib\Audio\WavFiles\78.wav" />
+      <None Remove="Lib\Audio\WavFiles\79.wav" />
+      <None Remove="Lib\Audio\WavFiles\8.wav" />
+      <None Remove="Lib\Audio\WavFiles\80.wav" />
+      <None Remove="Lib\Audio\WavFiles\81.wav" />
+      <None Remove="Lib\Audio\WavFiles\82.wav" />
+      <None Remove="Lib\Audio\WavFiles\83.wav" />
+      <None Remove="Lib\Audio\WavFiles\84.wav" />
+      <None Remove="Lib\Audio\WavFiles\85.wav" />
+      <None Remove="Lib\Audio\WavFiles\86.wav" />
+      <None Remove="Lib\Audio\WavFiles\87.wav" />
+      <None Remove="Lib\Audio\WavFiles\88.wav" />
+      <None Remove="Lib\Audio\WavFiles\89.wav" />
+      <None Remove="Lib\Audio\WavFiles\9.wav" />
+      <None Remove="Lib\Audio\WavFiles\90.wav" />
+      <None Remove="Lib\Audio\WavFiles\91.wav" />
+      <None Remove="Lib\Audio\WavFiles\92.wav" />
+      <None Remove="Lib\Audio\WavFiles\93.wav" />
+      <None Remove="Lib\Audio\WavFiles\94.wav" />
+      <None Remove="Lib\Audio\WavFiles\95.wav" />
+      <None Remove="Lib\Audio\WavFiles\96.wav" />
+      <None Remove="Lib\Audio\WavFiles\97.wav" />
+      <None Remove="Lib\Audio\WavFiles\98.wav" />
+      <None Remove="Lib\Audio\WavFiles\99.wav" />
+      <None Remove="Lib\Audio\WavFiles\flat.wav" />
+      <None Remove="Lib\Audio\WavFiles\o1.wav" />
+      <None Remove="Lib\Audio\WavFiles\o2.wav" />
+      <None Remove="Lib\Audio\WavFiles\o3.wav" />
+      <None Remove="Lib\Audio\WavFiles\o4.wav" />
+      <None Remove="Lib\Audio\WavFiles\o5.wav" />
+      <None Remove="Lib\Audio\WavFiles\o6.wav" />
+      <None Remove="Lib\Audio\WavFiles\o7.wav" />
+      <None Remove="Lib\Audio\WavFiles\o8.wav" />
+      <None Remove="Lib\Audio\WavFiles\o9.wav" />
+      <None Remove="Lib\Audio\WavFiles\tooSlow.wav" />
+      <None Remove="Lib\Audio\WavFiles\zeroPoint.wav" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\0.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\1.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\10.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\11.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\12.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\13.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\14.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\15.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\16.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\17.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\18.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\19.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\2.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\20.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\21.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\22.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\23.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\24.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\25.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\26.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\27.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\28.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\29.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\3.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\30.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\31.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\32.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\33.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\34.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\35.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\36.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\37.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\38.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\39.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\4.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\40.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\41.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\42.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\43.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\44.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\45.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\46.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\47.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\48.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\49.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\5.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\50.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\51.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\52.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\53.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\54.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\55.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\56.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\57.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\58.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\59.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\6.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\60.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\61.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\62.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\63.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\64.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\65.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\66.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\67.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\68.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\69.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\7.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\70.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\71.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\72.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\73.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\74.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\75.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\76.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\77.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\78.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\79.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\8.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\80.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\81.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\82.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\83.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\84.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\85.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\86.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\87.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\88.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\89.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\9.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\90.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\91.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\92.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\93.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\94.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\95.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\96.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\97.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\98.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\99.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\flat.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o1.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o2.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o3.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o4.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o5.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o6.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o7.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o8.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\o9.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\tooSlow.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\johnt\.nuget\packages\laptimeannouncer\1.0.0\contentFiles\any\netcoreapp3.1\audio\zeroPoint.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+    <ItemGroup>
+      <Content Include="Lib\Audio\WavFiles\0.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\1.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\10.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\11.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\12.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\13.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\14.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\15.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\16.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\17.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\18.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\19.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\2.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\20.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\21.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\22.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\23.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\24.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\25.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\26.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\27.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\28.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\29.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\3.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\30.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\31.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\32.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\33.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\34.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\35.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\36.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\37.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\38.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\39.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\4.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\40.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\41.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\42.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\43.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\44.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\45.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\46.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\47.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\48.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\49.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\5.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\50.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\51.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\52.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\53.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\54.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\55.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\56.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\57.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\58.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\59.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\6.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\60.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\61.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\62.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\63.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\64.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\65.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\66.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\67.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\68.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\69.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\7.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\70.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\71.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\72.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\73.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\74.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\75.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\76.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\77.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\78.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\79.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\8.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\80.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\81.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\82.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\83.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\84.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\85.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\86.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\87.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\88.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\89.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\9.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\90.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\91.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\92.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\93.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\94.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\95.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\96.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\97.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\98.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\99.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\flat.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\o1.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\o2.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\o3.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\o4.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\o5.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\o6.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\o7.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\o8.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\o9.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\tooSlow.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Lib\Audio\WavFiles\zeroPoint.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="5.10.3" />
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.2" />
+        <PackageReference Include="System.Windows.Extensions" Version="5.0.0" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 </Project>
